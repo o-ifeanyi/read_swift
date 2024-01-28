@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E9CA77D2B667091006DB304 /* ListTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA77C2B667091006DB304 /* ListTileView.swift */; };
+		1E9CA7812B6679B1006DB304 /* SpeechScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */; };
+		1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA7822B668AF4006DB304 /* Extentions.swift */; };
 		1EA3A8662B5BDDA400B1024F /* ReadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8652B5BDDA400B1024F /* ReadApp.swift */; };
 		1EA3A8682B5BDDA400B1024F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8672B5BDDA400B1024F /* ContentView.swift */; };
 		1EA3A86C2B5BDDA500B1024F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA3A86B2B5BDDA500B1024F /* Assets.xcassets */; };
@@ -50,6 +53,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E9CA77C2B667091006DB304 /* ListTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTileView.swift; sourceTree = "<group>"; };
+		1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechScreen.swift; sourceTree = "<group>"; };
+		1E9CA7822B668AF4006DB304 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		1EA3A8622B5BDDA400B1024F /* Read.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Read.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA3A8652B5BDDA400B1024F /* ReadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadApp.swift; sourceTree = "<group>"; };
 		1EA3A8672B5BDDA400B1024F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +109,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E9CA77E2B66799F006DB304 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				1E9CA77F2B6679A5006DB304 /* Views */,
+			);
+			path = Speech;
+			sourceTree = "<group>";
+		};
+		1E9CA77F2B6679A5006DB304 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		1EA3A8592B5BDDA400B1024F = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +185,7 @@
 		1EA3A8912B5BE23500B1024F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				1E9CA77E2B66799F006DB304 /* Speech */,
 				1EA3A8AA2B5BED7F00B1024F /* Settings */,
 				1EA3A8A92B5BED7800B1024F /* Library */,
 				1EA3A8A82B5BED7100B1024F /* Home */,
@@ -204,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				1EE20C7B2B62828000104CC7 /* TextParser.swift */,
+				1E9CA7822B668AF4006DB304 /* Extentions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -221,6 +245,7 @@
 			children = (
 				1EA3A8A02B5BE68800B1024F /* SnackbarComponent.swift */,
 				1EE20C7F2B62892D00104CC7 /* PlayerView.swift */,
+				1E9CA77C2B667091006DB304 /* ListTileView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -431,11 +456,14 @@
 				1EA3A89D2B5BE31B00B1024F /* SnackBarService.swift in Sources */,
 				1EA3A8682B5BDDA400B1024F /* ContentView.swift in Sources */,
 				1EE20C7E2B62831300104CC7 /* SpeechService.swift in Sources */,
+				1E9CA7812B6679B1006DB304 /* SpeechScreen.swift in Sources */,
 				1EA3A8C32B5C185600B1024F /* SettingsViewThree.swift in Sources */,
 				1EA3A8662B5BDDA400B1024F /* ReadApp.swift in Sources */,
+				1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */,
 				1EA3A8C12B5C0B5000B1024F /* Router.swift in Sources */,
 				1EA3A8B72B5C014500B1024F /* LibraryViewTwo.swift in Sources */,
 				1EA3A8B32B5BEDD500B1024F /* SettingsView.swift in Sources */,
+				1E9CA77D2B667091006DB304 /* ListTileView.swift in Sources */,
 				1EA3A8B92B5C01A700B1024F /* SettingsViewTwo.swift in Sources */,
 				1EA3A8B52B5BF3F800B1024F /* HomeViewTwo.swift in Sources */,
 				1EA3A8B02B5BEDB600B1024F /* LibraryView.swift in Sources */,

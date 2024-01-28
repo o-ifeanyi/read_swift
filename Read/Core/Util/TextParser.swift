@@ -12,14 +12,14 @@ import Vision
 import SwiftSoup
 
 struct TextParser {
-    static func parsePdf(pdf: PDFDocument, result: Binding<String?>) {
+    static func parsePdf(pdf: PDFDocument, perform action: @escaping (_ result: String) -> Void) {
         guard let page = pdf.page(at: 0) else { return }
         guard let pageContent = page.attributedString else { return }
         
-        result.wrappedValue = pageContent.string
+        action(pageContent.string.replacing("\n", with: " "))
     }
     
-    @MainActor static func parseImage(image: Image, result: Binding<String?>) {
+    @MainActor static func parseImage(image: Image, perform action: @escaping (_ result: String) -> Void) {
         let renderer = ImageRenderer(content: image)
         if let cgImage = renderer.uiImage?.cgImage {
             let handler = VNImageRequestHandler(cgImage: cgImage)
@@ -32,7 +32,7 @@ struct TextParser {
                     result.topCandidates(1).first?.string
                 }
                 DispatchQueue.main.async {
-                    result.wrappedValue = stringArray.joined(separator: "\n")
+                    action(stringArray.joined(separator: " "))
                 }
             }
             
@@ -45,9 +45,9 @@ struct TextParser {
         }
     }
     
-    static func parseUrl(link: String, result: Binding<String?>) {
+    static func parseUrl(link: String, perform action: @escaping (_ result: String) -> Void) {
         guard let url = URL(string: link) else {
-            result.wrappedValue = "Invalid url"
+            action("Invalid url")
             return
         }
         
@@ -58,7 +58,7 @@ struct TextParser {
                         let doc = try SwiftSoup.parse(htmlString)
                         let text = try doc.text()
                         DispatchQueue.main.async {
-                            result.wrappedValue = text
+                            action(text)
                         }
                     } catch {
                         print("Parsing error")

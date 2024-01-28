@@ -11,7 +11,6 @@ import SwiftData
 struct ContentView: View {
     @Environment(Router.self) private var router
     @Environment(SnackBarService.self) private var snackbarService
-    @Environment(SpeechService.self) private var speechService
     
     var body: some View {
         @Bindable var router = router
@@ -51,20 +50,7 @@ struct ContentView: View {
                 }
             }
             
-            if (speechService.state.text != nil) {
-                PlayerView(
-                    isPlaying: speechService.state.isPlaying,
-                    onPlay: {
-                        speechService.play()
-                    }, onPause: {
-                        speechService.pause()
-                    },
-                    onStop: {
-                        speechService.stop()
-                    }
-                )
-            }
-            
+            PlayerView()
         }
         .overlay(alignment: .top) {
             if (snackbarService.state != nil) {
@@ -72,10 +58,4 @@ struct ContentView: View {
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
-        .environment(Router.shared)
-        .environment(SnackBarService.shared)
 }

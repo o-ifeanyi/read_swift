@@ -9,8 +9,14 @@ import SwiftUI
 import AVFoundation
 
 struct SpeechState {
-    var text: String? = nil
+    var text: String = ""
     var isPlaying: Bool = false
+    var wordRange: NSRange = .init()
+    var progress: Double = 0.0
+    
+    var canPlay: Bool {
+        !text.isEmpty
+    }
 }
 
 @Observable
@@ -20,10 +26,12 @@ final class SpeechService: NSObject {
     
     private (set) var state: SpeechState = SpeechState()
     private (set) var isPaused: Bool = false
+    private (set) var textCount: Int = 0
     
     @MainActor
     func updateText(_ text: String) {
         state.text = text
+        textCount = text.count
     }
     
     @MainActor
@@ -38,13 +46,10 @@ final class SpeechService: NSObject {
     
     @MainActor
     func play() {
-        guard state.text != nil else {
-            return
-        }
         if isPaused {
             synthesizer.continueSpeaking()
         } else {
-            let utterance = AVSpeechUtterance(string: state.text!)
+            let utterance = AVSpeechUtterance(string: state.text)
             utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
             utterance.rate = 0.55
             
@@ -69,5 +74,11 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         self.isPaused = false
         state.isPlaying = false
+        state.wordRange = .init()
+    }
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
+        let progress = Double(willSpeakRangeOfSpeechString.upperBound) / Double(state.text.count)
+        state.wordRange = willSpeakRangeOfSpeechString
+        state.progress = progress
     }
 }

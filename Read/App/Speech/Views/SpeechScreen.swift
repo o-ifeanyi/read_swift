@@ -8,44 +8,12 @@
 import SwiftUI
 import AVFAudio
 
-struct HighlightedTextView: UIViewRepresentable {
-    @Environment(\.colorScheme) var theme
-    var text: String
-    var highlightedRange: NSRange
-
-
-    func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
-        textView.isEditable = false
-        textView.isSelectable = false
-        textView.attributedText = attributedText()
-        return textView
-    }
-
-    func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.attributedText = attributedText()
-    }
-
-    func attributedText() -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(string: text)
-        // color for all text in light & dark mode
-        attributedString.addAttribute(.foregroundColor, value: theme == .dark ? UIColor.white : UIColor.black, range: NSRange(location: 0, length: text.count))
-        // bg color of highlighted text
-        attributedString.addAttribute(.backgroundColor, value: UIColor.cyan, range: highlightedRange)
-        // fg color of highlighted text
-        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: highlightedRange)
-        // font for all text
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 18), range: NSRange(location: 0, length: text.count))
-        // color for read text
-        attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: 0, length: highlightedRange.location))
-        
-        return attributedString
-    }
-}
-
 struct SpeechScreen: View {
     @Environment(SpeechService.self) private var speechService
     @Binding var expanded: Bool
+    @State private var showVoicesSheet: Bool = false
+    @State private var showRateSheet: Bool = false
+    let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
     
     var body: some View {
         let state = speechService.state
@@ -64,6 +32,9 @@ struct SpeechScreen: View {
                     Spacer()
                     Symbols.speaker
                         .font(.title2)
+                        .onTapGesture {
+                            showVoicesSheet.toggle()
+                        }
                     Spacer()
                     if state.isPlaying {
                         Symbols.pause
@@ -83,6 +54,9 @@ struct SpeechScreen: View {
                     Spacer()
                     Symbols.speed
                         .font(.title2)
+                        .onTapGesture {
+                            showRateSheet.toggle()
+                        }
                     Spacer()
                 }
             }
@@ -98,6 +72,40 @@ struct SpeechScreen: View {
                             
                         }
                 }
+            }
+            .sheet(isPresented: $showVoicesSheet) {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        LazyVGrid(columns: gridColumn) {
+                            ForEach(speechService.state.voices, id: \.self) { voice in
+                                
+                                
+                                let gender = if voice.gender.rawValue == 0 {
+                                    "unknown"
+                                } else if voice.gender.rawValue == 1 {
+                                    "male"
+                                } else {
+                                    "female"
+                                }
+                                GridTileView(asset: voice.language.flag, title: voice.name, subtitle: gender)
+                                    .onTapGesture {
+                                        speechService.changeVoice(voice: voice)
+                                        showVoicesSheet.toggle()
+                                    }
+                            }
+                        }
+                    }
+                }
+                .presentationDetents([.medium, .large])
+            }
+            .sheet(isPresented: $showRateSheet) {
+                VStack {
+                    CustomSlider(progress: 0.5) { result in
+                        speechService.changeRate(rate: result)
+                        showRateSheet.toggle()
+                    }
+                }
+                .presentationDetents([.medium])
             }
         }
     }

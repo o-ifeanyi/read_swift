@@ -9,10 +9,11 @@ import SwiftUI
 import AVFoundation
 
 struct SpeechState {
-    var text: String = ""
+    var text: String = "hh"
     var isPlaying: Bool = false
     var wordRange: NSRange = .init()
     var progress: Double = 0.0
+    var voices: [AVSpeechSynthesisVoice] = []
     
     var canPlay: Bool {
         !text.isEmpty
@@ -26,12 +27,19 @@ final class SpeechService: NSObject {
     
     private (set) var state: SpeechState = SpeechState()
     private (set) var isPaused: Bool = false
+    
+    private (set) var words: [String] = []
+    private (set) var wordIndex: Int = 0
     private (set) var textCount: Int = 0
     
     @MainActor
     func updateText(_ text: String) {
         state.text = text
+        words = text.split(separator: " ").map( { "\($0)" })
         textCount = text.count
+        if state.voices.isEmpty {
+            state.voices = AVSpeechSynthesisVoice.speechVoices()
+        }
     }
     
     @MainActor
@@ -41,21 +49,38 @@ final class SpeechService: NSObject {
     
     @MainActor
     func stop() {
+        wordIndex = 0
+        state.progress = 0.0
+        state.wordRange = .init()
         synthesizer.stopSpeaking(at: .immediate)
     }
     
     @MainActor
-    func play() {
+    func play(voice: AVSpeechSynthesisVoice? = nil, rate: Float? = nil) {
         if isPaused {
             synthesizer.continueSpeaking()
         } else {
-            let utterance = AVSpeechUtterance(string: state.text)
-            utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
-            utterance.rate = 0.55
+            let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
+            let utterance = AVSpeechUtterance(string: String(state.text[spoken...]))
+            utterance.voice = voice ?? AVSpeechSynthesisVoice(language: "en-GB")
+            utterance.rate = rate ?? 0.5
             
             synthesizer.delegate = self
             synthesizer.speak(utterance)
         }
+    }
+    
+    
+    @MainActor
+    func changeVoice(voice: AVSpeechSynthesisVoice) {
+        synthesizer.stopSpeaking(at: .immediate)
+        play(voice: voice)
+    }
+    
+    @MainActor
+    func changeRate(rate: Float) {
+        synthesizer.stopSpeaking(at: .immediate)
+        play(rate: rate)
     }
 }
 
@@ -74,11 +99,24 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         self.isPaused = false
         state.isPlaying = false
-        state.wordRange = .init()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
-        let progress = Double(willSpeakRangeOfSpeechString.upperBound) / Double(state.text.count)
-        state.wordRange = willSpeakRangeOfSpeechString
-        state.progress = progress
+        
+        if (wordIndex < words.count) {
+            let utt = words[wordIndex]
+            let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
+            guard let range = state.text.range(of: utt, options: .caseInsensitive, range: spoken ..< state.text.endIndex) else {
+                return
+            }
+            wordIndex += 1
+            let startIndex = state.text.distance(from: state.text.startIndex, to: range.lowerBound)
+            let endIndex = state.text.distance(from: state.text.startIndex, to: range.upperBound)
+            if endIndex > startIndex {
+                let progress = Double(endIndex) / Double(state.text.count)
+                
+                state.wordRange = NSRange(location: startIndex, length: endIndex - startIndex)
+                state.progress = progress
+            }
+        }
     }
 }

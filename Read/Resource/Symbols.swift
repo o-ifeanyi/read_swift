@@ -17,4 +17,6 @@ enum Symbols {
     static let speaker = Image(systemName: "person.wave.2")
     static let speed = Image(systemName: "gauge.with.dots.needle.67percent")
     static let down = Image(systemName: "chevron.down")
+    static let download = Image(systemName: "arrowshape.down")
+    static let flag = Image(systemName: "flag.circle")
 }

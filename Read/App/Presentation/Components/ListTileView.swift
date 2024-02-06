@@ -7,15 +7,17 @@
 
 import SwiftUI
 
-struct ListTileView: View {
+struct ListTileView<Asset: View>: View {
+    let asset: Asset?
     let title: String
     let subtitle: String
     
     var body: some View {
         GroupBox {
             HStack(spacing: 15) {
-                RoundedRectangle(cornerRadius: 8)
-                    .frame(width: 50, height: 50)
+                if asset != nil {
+                    asset!
+                }
                 
                 VStack(alignment: .leading) {
                     Text(title)
@@ -24,11 +26,12 @@ struct ListTileView: View {
                         .font(.caption)
                         .multilineTextAlignment(.leading)
                 }
+                Spacer()
             }
         }
     }
 }
 
 #Preview {
-    ListTileView(title: "Pick document", subtitle: "SizeTransform defines how the size should animate between the.")
+    ListTileView<AnyView>(asset: nil, title: "Pick document", subtitle: "SizeTransform defines how the size should animate between the.")
 }

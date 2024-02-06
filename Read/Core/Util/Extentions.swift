@@ -30,4 +30,30 @@ extension String {
         }
         return String(s)
     }
+    
+    var trimUrl: String {
+        if let url = URL(string: self), let domain = url.host {
+            let components = domain.components(separatedBy: ".")
+            if let baseDomain = components.first {
+                return baseDomain
+            }
+        }
+        return self
+    }
+}
+
+extension Date {
+    var dwdm: String {
+        self.formatted(.dateTime.day().weekday().month())
+    }
+}
+
+extension URL {
+    var name: String {
+        let domain = self.lastPathComponent
+        if let primary = domain.split(separator: ".").first {
+            return primary.description
+        }
+        return domain
+    }
 }

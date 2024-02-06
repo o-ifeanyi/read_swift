@@ -7,9 +7,11 @@
 
 import SwiftUI
 import AVFoundation
+import PDFKit
 
 struct SpeechState {
-    var text: String = "hh"
+    var text: String = ""
+    var model: FileModel? = nil
     var isPlaying: Bool = false
     var wordRange: NSRange = .init()
     var progress: Double = 0.0
@@ -33,10 +35,50 @@ final class SpeechService: NSObject {
     private (set) var textCount: Int = 0
     
     @MainActor
-    func updateText(_ text: String) {
-        state.text = text
-        words = text.split(separator: " ").map( { "\($0)" })
-        textCount = text.count
+    func updateModel(_ model: FileModel) {
+        state.model = model
+        switch model.type {
+        case .pdf:
+            guard let url = URL(string: model.path) else {
+                return
+            }
+            if let pdf = PDFDocument(url: url) {
+                TextParser.parsePdf(pdf: pdf, perform: { result in
+                    self.stop()
+                    self.state.text = result
+                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                    self.textCount = self.state.text.count
+                    self.play()
+                })
+            } else {
+                print("document not found")
+            }
+        case .image:
+            guard let url = URL(string: model.path) else {
+                return
+            }
+            do {
+                let imageData = try Data.init(contentsOf: url)
+                let image = UIImage(data: imageData)
+                TextParser.parseImage(image: image, perform: { result in
+                    self.stop()
+                    self.state.text  = result
+                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                    self.textCount = self.state.text.count
+                    self.play()
+                })
+            } catch {
+                print(error.localizedDescription)
+            }
+        case .url:
+            TextParser.parseUrl(link: model.path, perform: { result in
+                self.stop()
+                self.state.text = result
+                self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                self.textCount = self.state.text.count
+                self.play()
+            })
+        }
         if state.voices.isEmpty {
             state.voices = AVSpeechSynthesisVoice.speechVoices()
         }
@@ -112,7 +154,7 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
             let startIndex = state.text.distance(from: state.text.startIndex, to: range.lowerBound)
             let endIndex = state.text.distance(from: state.text.startIndex, to: range.upperBound)
             if endIndex > startIndex {
-                let progress = Double(endIndex) / Double(state.text.count)
+                let progress = Double(endIndex) / Double(textCount)
                 
                 state.wordRange = NSRange(location: startIndex, length: endIndex - startIndex)
                 state.progress = progress

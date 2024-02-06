@@ -14,7 +14,7 @@ enum Tabs {
 enum Routes {
     case home
     case hometwo
-    case librarytwo
+    case folderView(id: String, name: String)
     case settingstwo
     case settingsthree
 }
@@ -26,8 +26,8 @@ extension Routes: View {
             ContentView()
         case .hometwo:
             HomeViewTwo()
-        case .librarytwo:
-            LibraryViewTwo()
+        case .folderView(let id, let name):
+            FolderView(id: id, name: name)
         case .settingstwo:
             SettingsViewTwo()
         case .settingsthree:
@@ -47,8 +47,8 @@ extension Routes: Hashable {
             return "home"
         case .hometwo:
             return "hometwo"
-        case .librarytwo:
-            return "librarytwo"
+        case .folderView:
+            return "folderView"
         case .settingstwo:
             return "settingstwo"
         case .settingsthree:

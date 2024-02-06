@@ -19,29 +19,29 @@ struct TextParser {
         action(pageContent.string.replacing("\n", with: " "))
     }
     
-    @MainActor static func parseImage(image: Image, perform action: @escaping (_ result: String) -> Void) {
-        let renderer = ImageRenderer(content: image)
-        if let cgImage = renderer.uiImage?.cgImage {
-            let handler = VNImageRequestHandler(cgImage: cgImage)
-            
-            let recognizeRequest = VNRecognizeTextRequest { (request, error) in
-                guard let data = request.results as? [VNRecognizedTextObservation] else {
-                    return
-                }
-                let stringArray = data.compactMap { result in
-                    result.topCandidates(1).first?.string
-                }
-                DispatchQueue.main.async {
-                    action(stringArray.joined(separator: " "))
-                }
+    @MainActor static func parseImage(image: UIImage?, perform action: @escaping (_ result: String) -> Void) {
+        guard let cgImage = image?.cgImage else {
+            return
+        }
+        let handler = VNImageRequestHandler(cgImage: cgImage)
+        
+        let recognizeRequest = VNRecognizeTextRequest { (request, error) in
+            guard let data = request.results as? [VNRecognizedTextObservation] else {
+                return
             }
-            
-            recognizeRequest.recognitionLevel = .accurate
-            do {
-                try handler.perform([recognizeRequest])
-            } catch {
-                print(error)
+            let stringArray = data.compactMap { result in
+                result.topCandidates(1).first?.string
             }
+            DispatchQueue.main.async {
+                action(stringArray.joined(separator: " "))
+            }
+        }
+        
+        recognizeRequest.recognitionLevel = .accurate
+        do {
+            try handler.perform([recognizeRequest])
+        } catch {
+            print(error)
         }
     }
     

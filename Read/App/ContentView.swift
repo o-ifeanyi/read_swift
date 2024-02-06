@@ -18,7 +18,6 @@ struct ContentView: View {
             TabView(selection: $router.selectedTab) {
                 NavigationStack(path: $router.homeRoutes) {
                     HomeView()
-                        .navigationTitle("Home")
                         .navigationDestination(for: Routes.self, destination: { $0 })
                 }
                 .tag(Tabs.home)
@@ -29,7 +28,6 @@ struct ContentView: View {
                 
                 NavigationStack(path: $router.libraryRoutes) {
                     LibraryView()
-                        .navigationTitle("Library")
                         .navigationDestination(for: Routes.self, destination: { $0 })
                 }
                 .tag(Tabs.library)
@@ -40,7 +38,6 @@ struct ContentView: View {
                 
                 NavigationStack(path: $router.settingsRoutes) {
                     SettingsView()
-                        .navigationTitle("Settings")
                         .navigationDestination(for: Routes.self, destination: { $0 })
                 }
                 .tag(Tabs.settings)

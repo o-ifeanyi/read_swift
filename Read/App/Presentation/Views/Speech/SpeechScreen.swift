@@ -87,11 +87,12 @@ struct SpeechScreen: View {
                                 } else {
                                     "female"
                                 }
-                                GridTileView(asset: voice.language.flag, title: voice.name, subtitle: gender)
-                                    .onTapGesture {
-                                        speechService.changeVoice(voice: voice)
-                                        showVoicesSheet.toggle()
-                                    }
+                                let flag = voice.language.flag
+                                GridTileView(asset: flag != nil ? Text(flag!) : nil, title: voice.name, subtitle: gender)
+                                .onTapGesture {
+                                    speechService.changeVoice(voice: voice)
+                                    showVoicesSheet.toggle()
+                                }
                             }
                         }
                     }

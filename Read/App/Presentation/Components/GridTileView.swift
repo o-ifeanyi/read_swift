@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct GridTileView: View {
-    let asset: String?
+struct GridTileView<Asset: View>: View {
+    let asset: Asset?
     let title: String
     let subtitle: String
     
@@ -18,7 +18,7 @@ struct GridTileView: View {
                 Spacer(minLength: 0)
                 VStack {
                     if asset != nil {
-                        Text(asset!)
+                        asset
                             .font(.title)
                     } else {
                         Symbols.flag
@@ -29,11 +29,12 @@ struct GridTileView: View {
                     
                     Text(title)
                         .fontWeight(.semibold)
+                        .lineLimit(1)
                     
                     Text(subtitle)
                         .font(.caption)
-                        .lineLimit(1)
-                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
                     
                 }
                 Spacer(minLength: 0)
@@ -43,5 +44,5 @@ struct GridTileView: View {
 }
 
 #Preview {
-    GridTileView(asset: "DE".flag, title: "John", subtitle: "male")
+    GridTileView(asset: Text("DE".flag ?? ""), title: "John", subtitle: "male")
 }

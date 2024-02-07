@@ -65,11 +65,33 @@ struct LibraryView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
                 if !folders.isEmpty {
-                    GroupBox(label: Text("Folders"), content: {
-                        switch listStyle {
-                        case .list:
+                    Text("Folders")
+                        .fontWeight(.semibold)
+                    
+                    switch listStyle {
+                    case .list:
+                        ForEach(folders) { folder in
+                            ListTileView(asset: Symbols.folder
+                                .font(.title), title: folder.name, subtitle: "\(folder.date.dwdm)")
+                            .onTapGesture { onFolderTapped(folder: folder) }
+                            .onLongPressGesture {
+                                if !isSelecting {
+                                    selectedFolders.append(folder)
+                                    withAnimation(.spring) {
+                                        isSelecting.toggle()
+                                    }
+                                }
+                            }
+                            .overlay(alignment: .topTrailing) {
+                                if isSelecting && selectedFolders.contains(folder) {
+                                    Symbols.checkFill
+                                }
+                            }
+                        }
+                    case .grid:
+                        LazyVGrid(columns: gridColumn) {
                             ForEach(folders) { folder in
-                                ListTileView(asset: Symbols.folder
+                                GridTileView(asset: Symbols.folder
                                     .font(.title), title: folder.name, subtitle: "\(folder.date.dwdm)")
                                 .onTapGesture { onFolderTapped(folder: folder) }
                                 .onLongPressGesture {
@@ -86,38 +108,38 @@ struct LibraryView: View {
                                     }
                                 }
                             }
-                        case .grid:
-                            LazyVGrid(columns: gridColumn) {
-                                ForEach(folders) { folder in
-                                    GridTileView(asset: Symbols.folder
-                                        .font(.title), title: folder.name, subtitle: "\(folder.date.dwdm)")
-                                    .onTapGesture { onFolderTapped(folder: folder) }
-                                    .onLongPressGesture {
-                                        if !isSelecting {
-                                            selectedFolders.append(folder)
-                                            withAnimation(.spring) {
-                                                isSelecting.toggle()
-                                            }
-                                        }
-                                    }
-                                    .overlay(alignment: .topTrailing) {
-                                        if isSelecting && selectedFolders.contains(folder) {
-                                            Symbols.checkFill
-                                        }
-                                    }
-                                }
-                            }
                         }
-                    })
+                    }
                 }
                 
                 
                 if !files.isEmpty {
-                    GroupBox(label: Text("Files"), content: {
-                        switch listStyle {
-                        case .list:
+                    Text("Files")
+                        .fontWeight(.semibold)
+                    
+                    switch listStyle {
+                    case .list:
+                        ForEach(files) { file in
+                            ListTileView(asset: file.icon.font(.title), title: file.name, subtitle: "\(file.type) • \(file.progress)% • \(file.date.dwdm)")
+                                .onTapGesture { onFileTapped(file: file) }
+                                .onLongPressGesture {
+                                    if !isSelecting {
+                                        selectedFiles.append(file)
+                                        withAnimation(.spring) {
+                                            isSelecting.toggle()
+                                        }
+                                    }
+                                }
+                                .overlay(alignment: .topTrailing) {
+                                    if isSelecting && selectedFiles.contains(file) {
+                                        Symbols.checkFill
+                                    }
+                                }
+                        }
+                    case .grid:
+                        LazyVGrid(columns: gridColumn) {
                             ForEach(files) { file in
-                                ListTileView(asset: file.icon.font(.title), title: file.name, subtitle: "\(file.type) • \(file.progress)% • \(file.date.dwdm)")
+                                GridTileView(asset: file.icon, title: file.name, subtitle: "\(file.type) • \(file.progress)%\n\(file.date.dwdm)")
                                     .onTapGesture { onFileTapped(file: file) }
                                     .onLongPressGesture {
                                         if !isSelecting {
@@ -133,28 +155,8 @@ struct LibraryView: View {
                                         }
                                     }
                             }
-                        case .grid:
-                            LazyVGrid(columns: gridColumn) {
-                                ForEach(files) { file in
-                                    GridTileView(asset: file.icon, title: file.name, subtitle: "\(file.type) • \(file.progress)%\n\(file.date.dwdm)")
-                                        .onTapGesture { onFileTapped(file: file) }
-                                        .onLongPressGesture {
-                                            if !isSelecting {
-                                                selectedFiles.append(file)
-                                                withAnimation(.spring) {
-                                                    isSelecting.toggle()
-                                                }
-                                            }
-                                        }
-                                        .overlay(alignment: .topTrailing) {
-                                            if isSelecting && selectedFiles.contains(file) {
-                                                Symbols.checkFill
-                                            }
-                                        }
-                                }
-                            }
                         }
-                    })
+                    }
                 }
                 
                 Spacer(minLength: 100)
@@ -162,7 +164,6 @@ struct LibraryView: View {
             .navigationTitle(isSelecting ? "\(allCount) Selected" : "Library")
             .searchable(text: $searchText, prompt: "Search")
             .onChange(of: searchText) {
-                print(searchText)
                 searching = !searchText.isEmpty
                 if !searchText.isEmpty {
                     libraryViewModel.search(query: searchText)
@@ -182,18 +183,22 @@ struct LibraryView: View {
             .sheet(isPresented: $renameItem) {
                 RenameView(file: selectedFiles.first, folder: selectedFolders.first)
                     .onDisappear {
-                        isSelecting = false
-                        selectedFiles = []
-                        selectedFolders = []
+                        withAnimation(.spring) {
+                            isSelecting = false
+                            selectedFiles = []
+                            selectedFolders = []
+                        }
                     }
                     .presentationDetents([.medium])
             }
             .sheet(isPresented: $moveFiles) {
                 MoveFilesView(files: selectedFiles)
                     .onDisappear {
-                        isSelecting = false
-                        selectedFiles = []
-                        selectedFolders = []
+                        withAnimation(.spring) {
+                            isSelecting = false
+                            selectedFiles = []
+                            selectedFolders = []
+                        }
                     }
             }
             .task {

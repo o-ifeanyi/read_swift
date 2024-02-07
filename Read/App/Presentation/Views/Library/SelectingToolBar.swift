@@ -31,22 +31,19 @@ struct SelectingToolBar: ToolbarContent {
         }
         ToolbarItem(placement: .topBarTrailing) {
             Button(action: {
-                if allSelected {
-                    selectedFiles = []
-                    selectedFolders = []
-                } else {
-                    selectedFiles = []
-                    selectedFolders = []
+                selectedFiles = []
+                selectedFolders = []
+                if !allSelected {
                     selectedFiles.append(contentsOf: files)
                     selectedFolders.append(contentsOf: folders)
                 }
             }, label: {
                 if allSelected {
-                    Text("Deselect All")
-                    
+                    Symbols.checkFill
                 } else {
-                    Text("Select All")
+                    Symbols.check
                 }
+                Text("All")
             })
         }
         ToolbarItem(placement: .topBarTrailing) {

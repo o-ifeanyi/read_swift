@@ -20,8 +20,6 @@ struct FolderView: View {
     let name: String
     let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
     
-//    @State private var files: [FileModel] = []
-    
     @MainActor func onFileTapped(file: FileModel) {
         guard isSelecting else {
             speechService.updateModel(file)
@@ -39,7 +37,10 @@ struct FolderView: View {
         
         ScrollView(.vertical, showsIndicators: false) {
             if !files.isEmpty {
-                GroupBox(label: Text("Files"), content: {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Files")
+                        .fontWeight(.semibold)
+                    
                     LazyVGrid(columns: gridColumn) {
                         ForEach(files) { file in
                             GridTileView(asset: file.icon, title: file.name, subtitle: "\(file.type) • \(file.progress)%\n\(file.date.dwdm)")
@@ -59,18 +60,20 @@ struct FolderView: View {
                                 }
                         }
                     }
-                })
+                }
+            } else {
+                EmptyView()
             }
             Spacer(minLength: 100)
         }
         .task {
-           libraryViewModel.getFolderFiles(id: id)
+            libraryViewModel.getFolderFiles(id: id)
         }
         .padding(.horizontal, 15)
         .navigationTitle(isSelecting ? "\(selectedFiles.count) Selected" : name)
         .toolbar {
             if isSelecting {
-            SelectingToolBar(isSelecting: $isSelecting, moveFiles: $moveFiles, renameItem: $renameItem, selectedFiles: $selectedFiles, selectedFolders: .constant([]), files: files, folders: [])
+                SelectingToolBar(isSelecting: $isSelecting, moveFiles: $moveFiles, renameItem: $renameItem, selectedFiles: $selectedFiles, selectedFolders: .constant([]), files: files, folders: [])
             }
         }
         .sheet(isPresented: $renameItem) {

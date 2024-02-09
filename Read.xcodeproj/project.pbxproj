@@ -13,6 +13,7 @@
 		1E0E8BC62B6DCFDA0006C558 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */; };
 		1E2B43EA2B6A9CCB000BBEF6 /* GridTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B43E92B6A9CCB000BBEF6 /* GridTileView.swift */; };
 		1E2B43EC2B6AFAF7000BBEF6 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B43EB2B6AFAF7000BBEF6 /* CustomSlider.swift */; };
+		1E3BF8E72B758FED001F87DB /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3BF8E62B758FED001F87DB /* SettingsItem.swift */; };
 		1E75D72A2B7037B900BC0051 /* FolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D7292B7037B900BC0051 /* FolderModel.swift */; };
 		1E75D72C2B703A7800BC0051 /* CreateFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D72B2B703A7800BC0051 /* CreateFolderView.swift */; };
 		1E75D72E2B7056BF00BC0051 /* EnterUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D72D2B7056BF00BC0051 /* EnterUrlView.swift */; };
@@ -73,6 +74,7 @@
 		1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		1E2B43E92B6A9CCB000BBEF6 /* GridTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTileView.swift; sourceTree = "<group>"; };
 		1E2B43EB2B6AFAF7000BBEF6 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
+		1E3BF8E62B758FED001F87DB /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		1E75D7292B7037B900BC0051 /* FolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModel.swift; sourceTree = "<group>"; };
 		1E75D72B2B703A7800BC0051 /* CreateFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFolderView.swift; sourceTree = "<group>"; };
 		1E75D72D2B7056BF00BC0051 /* EnterUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUrlView.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				1E9CA77C2B667091006DB304 /* ListTileView.swift */,
 				1E2B43E92B6A9CCB000BBEF6 /* GridTileView.swift */,
 				1E2B43EB2B6AFAF7000BBEF6 /* CustomSlider.swift */,
+				1E3BF8E62B758FED001F87DB /* SettingsItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				1E75D72A2B7037B900BC0051 /* FolderModel.swift in Sources */,
 				1EC4949E2B6E6EC700058BAF /* FileModel.swift in Sources */,
 				1E75D72E2B7056BF00BC0051 /* EnterUrlView.swift in Sources */,
+				1E3BF8E72B758FED001F87DB /* SettingsItem.swift in Sources */,
 				1E0A3B9C2B71A44E00C173FB /* RenameView.swift in Sources */,
 				1EDE7C7B2B6FE7E600D50213 /* SelectingToolBar.swift in Sources */,
 				1EE20C802B62892D00104CC7 /* PlayerView.swift in Sources */,

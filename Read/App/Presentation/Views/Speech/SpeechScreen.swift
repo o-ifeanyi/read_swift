@@ -19,7 +19,7 @@ struct SpeechScreen: View {
         let state = speechService.state
         NavigationView {
             VStack(spacing: 15) {
-                ScrollView {
+                ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         if state.canPlay {
                             HighlightedTextView(text: state.text, highlightedRange: state.wordRange)

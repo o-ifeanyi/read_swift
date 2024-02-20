@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.colorScheme) private var scheme
+    @AppStorage(Constants.theme) private var theme = AppTheme.system
     @Environment(Router.self) private var router
     @Environment(SnackBarService.self) private var snackbarService
     
@@ -53,6 +55,11 @@ struct ContentView: View {
             if (snackbarService.state != nil) {
                 SnackbarComponent(state: snackbarService.state!)
             }
+        }
+        .preferredColorScheme(theme.overrideTheme)
+        .environment(\.colorScheme, theme.overrideTheme ?? scheme)
+        .task {
+            print(scheme)
         }
     }
 }

@@ -10,7 +10,8 @@ import PDFKit
 import PhotosUI
 
 struct HomeView: View {
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
+    @Environment(SettingsViewModel.self) private var settingsVM
     @Environment(SpeechService.self) private var speechService
     
     @State private var pickDoc: Bool = false
@@ -43,15 +44,26 @@ struct HomeView: View {
         }
         .navigationTitle("Home")
         .sheet(isPresented: $showTextField) {
-            EnterUrlView()
+            EnterUrlSheet()
                 .presentationDetents([.medium])
+        }
+        .sheet(isPresented: Binding(
+            get: { settingsVM.showWhatsNew },
+            set: { settingsVM.showWhatsNew = $0 }
+        )) {
+            WhatsNewView()
+                .presentationDetents([.medium, .large])
         }
         .fileImporter(isPresented: $pickDoc, allowedContentTypes: [.pdf], onCompletion: { result in
             do{
                 let url = try result.get()
-                let file = FileModel(name: url.name, type: .pdf, path: url.absoluteString)
+                let docUrl = URL.documentsDirectory.appending(path: url.name)
+                
+                try FileManager.default.copyItem(at: url, to: docUrl)
+                
+                let file = FileModel(name: docUrl.name, type: .pdf, path: docUrl.lastPathComponent)
                 // TODO: should be inserted on success of update model
-                libraryViewModel.insertItem(file: file)
+                libraryVM.insertItem(file: file)
                 speechService.updateModel(file)
             }
             catch{
@@ -60,25 +72,26 @@ struct HomeView: View {
         }
         )
         .onChange(of: imageItem) {
-            guard imageItem == nil else {
-                PermissionService.shared.requestPhotoAccess {
-                    if let localID = imageItem!.itemIdentifier {
-                        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localID], options: nil)
-                        if let asset = result.firstObject {
-                            asset.requestContentEditingInput(with: PHContentEditingInputRequestOptions()) { (eidtingInput, info) in
-                                if let input = eidtingInput, let url = input.fullSizeImageURL {
-                                    let file = FileModel(name: url.name, type: .image, path: url.absoluteString)
-                                    // TODO: should be inserted on success of update model
-                                    libraryViewModel.insertItem(file: file)
-                                    speechService.updateModel(file)
-                                }
-                            }
-                        }
-                    }
-                }
+            guard imageItem != nil else {
                 return
             }
-            
+            Task {
+                if let loaded = try? await imageItem?.loadTransferable(type: Data.self) {
+                    let url = URL.documentsDirectory.appending(path: "image.jpg")
+                    do {
+                        try loaded.write(to: url, options: [.atomic, .completeFileProtection])
+                        let file = FileModel(name: url.name, type: .image, path: url.lastPathComponent)
+                        // TODO: should be inserted on success of update model
+                        libraryVM.insertItem(file: file)
+                        speechService.updateModel(file)
+                    } catch {
+                        print("error writing to url")
+                        print(error.localizedDescription)
+                    }
+                } else {
+                    print("Failed")
+                }
+            }
         }
     }
 }

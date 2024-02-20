@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct EnterUrlView: View {
+struct EnterUrlSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SpeechService.self) private var speechService
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     
     @FocusState private var fieldIsFocused: Bool
     
@@ -22,20 +22,15 @@ struct EnterUrlView: View {
                 Form {
                     TextField("Link", text: $link)
                         .focused($fieldIsFocused)
-                    Button(action: {
+                    
+                    AppButton(text: "Coninue", action: {
                         let file = FileModel(name: link.trimUrl, type: .url, path: link)
                         // TODO: should be inserted on success of update model
-                        libraryViewModel.insertItem(file: file)
+                        libraryVM.insertItem(file: file)
                         speechService.updateModel(file)
                         dismiss()
-                    }, label: {
-                        Spacer()
-                        Text("Continue")
-                            .padding(.vertical, 8)
-                        Spacer()
                     })
                     .disabled(link.isEmpty)
-                    .buttonStyle(.borderedProminent)
                 }
                 
             }

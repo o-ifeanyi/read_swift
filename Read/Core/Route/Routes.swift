@@ -15,8 +15,9 @@ enum Routes {
     case home
     case hometwo
     case folderView(id: String, name: String)
-    case settingstwo
-    case settingsthree
+    case aboutAppView
+    case appearance
+    case textToSpeech
 }
 
 extension Routes: View {
@@ -28,10 +29,12 @@ extension Routes: View {
             HomeViewTwo()
         case .folderView(let id, let name):
             FolderView(id: id, name: name)
-        case .settingstwo:
-            SettingsViewTwo()
-        case .settingsthree:
-            SettingsViewThree()
+        case .aboutAppView:
+            AboutAppView()
+        case .appearance:
+            AppearanceView()
+        case .textToSpeech:
+            TextToSpeechView()
         }
     }
 }
@@ -49,10 +52,12 @@ extension Routes: Hashable {
             return "hometwo"
         case .folderView:
             return "folderView"
-        case .settingstwo:
-            return "settingstwo"
-        case .settingsthree:
-            return "settingsthree"
+        case .aboutAppView:
+            return "aboutAppView"
+        case .appearance:
+            return "appearance"
+        case .textToSpeech:
+            return "textToSpeech"
         }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SelectingToolBar: ToolbarContent {
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     @Binding var isSelecting: Bool
     @Binding var moveFiles: Bool
     @Binding var renameItem: Bool
@@ -50,8 +50,8 @@ struct SelectingToolBar: ToolbarContent {
             Menu(content: {
                 Button(action: {
                     Task {
-                        await libraryViewModel.deleteItems(folders: selectedFolders)
-                        await libraryViewModel.deleteItems(files: selectedFiles)
+                        await libraryVM.deleteItems(folders: selectedFolders)
+                        await libraryVM.deleteItems(files: selectedFiles)
                         
                         selectedFiles = []
                         selectedFolders = []

@@ -30,7 +30,7 @@ final class LibraryViewModel {
     func getAllFiles() {
         do {
             let descriptor = FetchDescriptor<FileModel>(
-                predicate: #Predicate<FileModel> { $0.folder == nil },
+                predicate: #Predicate<FileModel> { $0.parent == nil },
                 sortBy: [SortDescriptor(\.date)]
             )
             let files = try modelContext.fetch(descriptor)
@@ -57,7 +57,7 @@ final class LibraryViewModel {
     func getFolderFiles(id: String) {
         do {
             let descriptor = FetchDescriptor<FileModel>(
-                predicate: #Predicate<FileModel> { $0.folder == id },
+                predicate: #Predicate<FileModel> { $0.parent == id },
                 sortBy: [SortDescriptor(\.date)]
             )
             let files = try modelContext.fetch(descriptor)
@@ -65,6 +65,14 @@ final class LibraryViewModel {
         } catch {
             print("Fetch folderFiles failed")
         }
+    }
+    
+    
+    func getFolderFilesCount(id: String) -> Int {
+        let descriptor = FetchDescriptor<FileModel>(
+            predicate: #Predicate<FileModel> { $0.parent == id }
+        )
+        return (try? modelContext.fetchCount(descriptor)) ?? 0
     }
     
     
@@ -107,14 +115,14 @@ final class LibraryViewModel {
             modelContext.delete(file)
         }
         // from library
-        if files.filter( {$0.folder != nil} ).isEmpty {
+        if files.filter( {$0.parent != nil} ).isEmpty {
             withAnimation(.spring) {
                 getAllFiles()
             }
         // from folder
         } else {
             withAnimation(.spring) {
-                getFolderFiles(id: files.first!.folder!)
+                getFolderFiles(id: files.first!.parent!)
             }
         }
     }
@@ -143,8 +151,8 @@ final class LibraryViewModel {
     func moveToFolder(id: String, files: [FileModel]) {
         var currentFolderId: String?
         for file in files {
-            currentFolderId = file.folder
-            file.folder = id
+            currentFolderId = file.parent
+            file.parent = id
         }
         // from library
         if currentFolderId == nil {

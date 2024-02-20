@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct RenameView: View {
+struct RenameSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     
     let file: FileModel?
     let folder: FolderModel?
@@ -23,23 +23,16 @@ struct RenameView: View {
                 Form {
                     TextField("Name", text: $name)
                         .focused($fieldIsFocused)
-                    Button(action: {
-                        Task {
-                            if file != nil {
-                                file!.name = name
-                            } else if folder != nil {
-                                folder!.name = name
-                            }
-                            dismiss()
+                    
+                    AppButton(text: "Continue", action: {
+                        if file != nil {
+                            file!.name = name
+                        } else if folder != nil {
+                            folder!.name = name
                         }
-                    }, label: {
-                        Spacer()
-                        Text("Continue")
-                            .padding(.vertical, 8)
-                        Spacer()
+                        dismiss()
                     })
                     .disabled(name.isEmpty)
-                    .buttonStyle(.borderedProminent)
                 }
                 
             }
@@ -51,8 +44,9 @@ struct RenameView: View {
                     }
                 }
             }
-            .onAppear {
+            .task {
                 fieldIsFocused = true
+                name = file?.name ?? folder?.name ?? ""
             }
         }
     }

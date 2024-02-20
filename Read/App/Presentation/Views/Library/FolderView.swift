@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FolderView: View {
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     @Environment(SpeechService.self) private var speechService
     
     @State private var renameItem: Bool = false
@@ -33,7 +33,7 @@ struct FolderView: View {
     }
     
     var body: some View {
-        let files = libraryViewModel.state.folderFiles
+        let files = libraryVM.state.folderFiles
         
         ScrollView(.vertical, showsIndicators: false) {
             if !files.isEmpty {
@@ -67,7 +67,7 @@ struct FolderView: View {
             Spacer(minLength: 100)
         }
         .task {
-            libraryViewModel.getFolderFiles(id: id)
+            libraryVM.getFolderFiles(id: id)
         }
         .padding(.horizontal, 15)
         .navigationTitle(isSelecting ? "\(selectedFiles.count) Selected" : name)
@@ -77,7 +77,7 @@ struct FolderView: View {
             }
         }
         .sheet(isPresented: $renameItem) {
-            RenameView(file: selectedFiles.first, folder: nil)
+            RenameSheet(file: selectedFiles.first, folder: nil)
                 .onDisappear {
                     isSelecting = false
                     selectedFiles = []

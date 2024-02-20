@@ -13,6 +13,15 @@ extension UIScreen{
     static let size = UIScreen.main.bounds.size
 }
 
+extension Bundle {
+    static var appVersion: String? {
+        let version = main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let build = main.infoDictionary?["CFBundleVersion"] as? String
+        guard version != nil && build != nil else { return nil }
+        return "\(version!).\(build!)"
+    }
+}
+
 extension String {
     var country: String? {
         let locale = Locale(identifier: "en_US")
@@ -25,9 +34,7 @@ extension String {
         for v in (self.split(separator: "-").last ?? "").unicodeScalars {
             s.unicodeScalars.append(UnicodeScalar(base + v.value)!)
         }
-        if s.count > 1 {
-            return nil
-        }
+        guard s.count == 1 else { return nil }
         return String(s)
     }
     

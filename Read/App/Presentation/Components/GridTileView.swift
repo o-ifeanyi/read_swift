@@ -31,8 +31,10 @@ struct GridTileView<Asset: View>: View {
                         .fontWeight(.semibold)
                         .lineLimit(1)
                     
+                    Spacer(minLength: 5)
+                    
                     Text(subtitle)
-                        .font(.caption)
+                        .font(.subheadline)
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
                     

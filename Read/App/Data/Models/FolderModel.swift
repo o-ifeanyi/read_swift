@@ -13,6 +13,7 @@ final class FolderModel {
     let id: String = UUID().uuidString
     var name: String
     let date: Date = Date.now
+    var parent: String? = nil
     
     init(name: String) {
         self.name = name

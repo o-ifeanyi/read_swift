@@ -19,6 +19,7 @@ struct ReadApp: App {
                 .environment(SnackBarService.shared)
                 .environment(SpeechService.shared)
                 .environment(LibraryViewModel(modelContext: database.container.mainContext))
+                .environment(SettingsViewModel(modelContext: database.container.mainContext))
         }
         .modelContainer(database.container)
     }

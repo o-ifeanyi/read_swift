@@ -28,20 +28,24 @@ final class SpeechService: NSObject {
     private let synthesizer = AVSpeechSynthesizer()
     
     private (set) var state: SpeechState = SpeechState()
-    private (set) var isPaused: Bool = false
     
     private (set) var words: [String] = []
     private (set) var wordIndex: Int = 0
     private (set) var textCount: Int = 0
     
     @MainActor
+    func initTTSVoices() {
+        guard state.voices.isEmpty else { return }
+        state.voices = AVSpeechSynthesisVoice.speechVoices()
+    }
+    
+    
+    @MainActor
     func updateModel(_ model: FileModel) {
         state.model = model
         switch model.type {
         case .pdf:
-            guard let url = URL(string: model.path) else {
-                return
-            }
+            let url = URL(fileURLWithPath: model.fullPath)
             if let pdf = PDFDocument(url: url) {
                 TextParser.parsePdf(pdf: pdf, perform: { result in
                     self.stop()
@@ -54,9 +58,7 @@ final class SpeechService: NSObject {
                 print("document not found")
             }
         case .image:
-            guard let url = URL(string: model.path) else {
-                return
-            }
+            let url = URL(fileURLWithPath: model.fullPath)
             do {
                 let imageData = try Data.init(contentsOf: url)
                 let image = UIImage(data: imageData)
@@ -79,14 +81,35 @@ final class SpeechService: NSObject {
                 self.play()
             })
         }
-        if state.voices.isEmpty {
-            state.voices = AVSpeechSynthesisVoice.speechVoices()
-        }
     }
     
     @MainActor
     func pause() {
-        synthesizer.pauseSpeaking(at: .immediate)
+        synthesizer.stopSpeaking(at: .immediate)
+    }
+    
+    @MainActor
+    func forward() {
+        synthesizer.stopSpeaking(at: .immediate)
+        if wordIndex + 10 < words.count {
+            wordIndex = wordIndex + 10
+        } else {
+            wordIndex = _words.count - 3
+        }
+        updateProgress()
+        play()
+    }
+    
+    @MainActor
+    func rewind() {
+        synthesizer.stopSpeaking(at: .immediate)
+        if wordIndex - 10 > 0 {
+            wordIndex = wordIndex - 10
+        } else {
+            wordIndex = 0
+        }
+        updateProgress()
+        play()
     }
     
     @MainActor
@@ -98,31 +121,39 @@ final class SpeechService: NSObject {
     }
     
     @MainActor
-    func play(voice: AVSpeechSynthesisVoice? = nil, rate: Float? = nil) {
-        if isPaused {
-            synthesizer.continueSpeaking()
-        } else {
-            let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
-            let utterance = AVSpeechUtterance(string: String(state.text[spoken...]))
-            utterance.voice = voice ?? AVSpeechSynthesisVoice(language: "en-GB")
-            utterance.rate = rate ?? 0.5
-            
-            synthesizer.delegate = self
-            synthesizer.speak(utterance)
+    func play() {
+        let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
+        let utterance = AVSpeechUtterance(string: String(state.text[spoken...]))
+        initTTSVoices()
+        utterance.voice = state.voices.first(where: { $0.identifier == UserDefaults.standard.value(forKey: Constants.voice) as? String}) ?? AVSpeechSynthesisVoice(language: "en-GB")
+        utterance.rate = UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5
+        
+        synthesizer.delegate = self
+        synthesizer.speak(utterance)
+    }
+    
+    @MainActor
+    func stopAndPlay() {
+        synthesizer.stopSpeaking(at: .immediate)
+        play()
+    }
+    
+    private func updateProgress() {
+        let utt = words[wordIndex]
+        let offset = Array(_words[0 ..< wordIndex]).joined(separator: " ").count
+        let spoken = state.text.index(state.text.startIndex, offsetBy: offset)
+        guard let range = state.text.range(of: utt, options: .caseInsensitive, range: spoken ..< state.text.endIndex) else {
+            return
         }
-    }
-    
-    
-    @MainActor
-    func changeVoice(voice: AVSpeechSynthesisVoice) {
-        synthesizer.stopSpeaking(at: .immediate)
-        play(voice: voice)
-    }
-    
-    @MainActor
-    func changeRate(rate: Float) {
-        synthesizer.stopSpeaking(at: .immediate)
-        play(rate: rate)
+        wordIndex += 1
+        let startIndex = state.text.distance(from: state.text.startIndex, to: range.lowerBound)
+        let endIndex = state.text.distance(from: state.text.startIndex, to: range.upperBound)
+        if endIndex > startIndex {
+            let progress = Double(endIndex) / Double(textCount)
+            
+            state.wordRange = NSRange(location: startIndex, length: endIndex - startIndex)
+            state.progress = progress
+        }
     }
 }
 
@@ -131,34 +162,18 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
         state.isPlaying = true
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
-        self.isPaused = true
         state.isPlaying = false
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didContinue utterance: AVSpeechUtterance) {
-        self.isPaused = false
         state.isPlaying = true
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        self.isPaused = false
         state.isPlaying = false
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
         
         if (wordIndex < words.count) {
-            let utt = words[wordIndex]
-            let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
-            guard let range = state.text.range(of: utt, options: .caseInsensitive, range: spoken ..< state.text.endIndex) else {
-                return
-            }
-            wordIndex += 1
-            let startIndex = state.text.distance(from: state.text.startIndex, to: range.lowerBound)
-            let endIndex = state.text.distance(from: state.text.startIndex, to: range.upperBound)
-            if endIndex > startIndex {
-                let progress = Double(endIndex) / Double(textCount)
-                
-                state.wordRange = NSRange(location: startIndex, length: endIndex - startIndex)
-                state.progress = progress
-            }
+            updateProgress()
         }
     }
 }

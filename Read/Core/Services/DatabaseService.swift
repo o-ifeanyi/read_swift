@@ -11,7 +11,7 @@ final class DatabaseService {
     static let shared = DatabaseService()
 
     var container: ModelContainer = {
-        let schema = Schema([FileModel.self, FolderModel.self])
+        let schema = Schema([FileModel.self, FolderModel.self, WhatsNewModel.self])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {

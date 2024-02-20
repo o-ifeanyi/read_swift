@@ -10,10 +10,10 @@ import SwiftUI
 enum SortType {case name, date }
 
 struct DefaultToolBar: ToolbarContent {
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     @Binding var isSelecting: Bool
     @Binding var createFolder: Bool
-    @Binding var listStyle: ListStyle
+    @Binding var displayStyle: DisplayStyle
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
@@ -27,12 +27,12 @@ struct DefaultToolBar: ToolbarContent {
                 Menu {
                     Button("Name") { 
                         Task {
-                           await libraryViewModel.sort(type: .name)
+                           await libraryVM.sort(type: .name)
                         }
                     }
                     Button("Date") { 
                         Task {
-                           await libraryViewModel.sort(type: .date)
+                           await libraryVM.sort(type: .date)
                         }
                     }
                 } label: {
@@ -48,14 +48,14 @@ struct DefaultToolBar: ToolbarContent {
                 Divider()
                 Button(action: {
                     withAnimation(.spring) {
-                        listStyle = .list
+                        displayStyle = .list
                     }
                 }, label: {
                     Label("List View", systemImage: "list.bullet")
                 })
                 Button(action: {
                     withAnimation(.spring) {
-                        listStyle = .grid
+                        displayStyle = .grid
                     }
                 }, label: {
                     Label("Grid View", systemImage: "square.grid.2x2")

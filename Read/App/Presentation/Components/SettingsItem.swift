@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct SettingsItem<Asset: View>: View {
+struct SettingsItem<Icon: View, Trailing: View>: View {
     let title: String
-    let icon: Asset
+    @ViewBuilder let icon: Icon
     let color: Color
+    @ViewBuilder let trailing: Trailing
     var body: some View {
         HStack {
             ZStack {
@@ -25,12 +26,14 @@ struct SettingsItem<Asset: View>: View {
             
             Text(title)
             
-            
             Spacer()
+            
+            trailing
+                .foregroundStyle(.gray)
         }
     }
 }
 
 #Preview {
-    SettingsItem(title: "Test", icon: Symbols.check, color: .blue)
+    SettingsItem(title: "Test", icon: { Symbols.check }, color: .blue, trailing: {})
 }

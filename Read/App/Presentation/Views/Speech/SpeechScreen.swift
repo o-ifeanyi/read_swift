@@ -13,7 +13,6 @@ struct SpeechScreen: View {
     @Binding var expanded: Bool
     @State private var showVoicesSheet: Bool = false
     @State private var showRateSheet: Bool = false
-    let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
     
     var body: some View {
         let state = speechService.state
@@ -36,6 +35,12 @@ struct SpeechScreen: View {
                             showVoicesSheet.toggle()
                         }
                     Spacer()
+                    Symbols.rewind
+                        .font(.title)
+                        .onTapGesture {
+                            speechService.rewind()
+                        }
+                    Spacer()
                     if state.isPlaying {
                         Symbols.pause
                             .resizable()
@@ -51,6 +56,12 @@ struct SpeechScreen: View {
                                 speechService.play()
                             }
                     }
+                    Spacer()
+                    Symbols.forward
+                        .font(.title)
+                        .onTapGesture {
+                            speechService.forward()
+                        }
                     Spacer()
                     Symbols.speed
                         .font(.title2)
@@ -74,37 +85,18 @@ struct SpeechScreen: View {
                 }
             }
             .sheet(isPresented: $showVoicesSheet) {
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack {
-                        LazyVGrid(columns: gridColumn) {
-                            ForEach(speechService.state.voices, id: \.self) { voice in
-                                
-                                
-                                let gender = if voice.gender.rawValue == 0 {
-                                    "unknown"
-                                } else if voice.gender.rawValue == 1 {
-                                    "male"
-                                } else {
-                                    "female"
-                                }
-                                let flag = voice.language.flag
-                                GridTileView(asset: flag != nil ? Text(flag!) : nil, title: voice.name, subtitle: gender)
-                                .onTapGesture {
-                                    speechService.changeVoice(voice: voice)
-                                    showVoicesSheet.toggle()
-                                }
-                            }
-                        }
-                    }
+                VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet) { voice in
+                    UserDefaults.standard.setValue(voice.identifier, forKey: Constants.voice)
+                    showVoicesSheet.toggle()
+                    speechService.stopAndPlay()
                 }
                 .presentationDetents([.medium, .large])
             }
             .sheet(isPresented: $showRateSheet) {
-                VStack {
-                    CustomSlider(progress: 0.5) { result in
-                        speechService.changeRate(rate: result)
-                        showRateSheet.toggle()
-                    }
+                CustomSliderSheet(progress: UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5) { result in
+                    UserDefaults.standard.setValue(result, forKey: Constants.speechRate)
+                    showRateSheet.toggle()
+                    speechService.stopAndPlay()
                 }
                 .presentationDetents([.medium])
             }

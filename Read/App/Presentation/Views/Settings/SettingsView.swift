@@ -9,6 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(Router.self) private var router
+    @Environment(SpeechService.self) private var speechService
+    @State private var showWhatsNew: Bool = false
+    private var storeLink = URL(string: "https://www.hackingwithswift.com")!
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -16,57 +19,57 @@ struct SettingsView: View {
                 Text("General")
                     .fontWeight(.semibold)
                 GroupBox {
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Appearance", icon: Symbols.theme, color: .blue)
+                    NavigationLink(value: Routes.appearance, label: {
+                        SettingsItem(title: "Appearance", icon: {Symbols.theme}, color: .blue, trailing: {})
                     })
                     
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Speaking Voice", icon: Symbols.speaker, color: .pink)
-                    })
-                    
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Speech Rate", icon: Symbols.speed, color: .orange)
+                    NavigationLink(value: Routes.textToSpeech, label: {
+                        SettingsItem(title: "Text To Speech", icon: {Symbols.waveform}, color: .pink, trailing: {})
                     })
                 }
                 
                 Text("Support")
                     .fontWeight(.semibold)
                 GroupBox {
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Leave A Review", icon: Symbols.star, color: .blue)
+                    Link(destination: storeLink, label: {
+                        SettingsItem(title: "Leave A Review", icon: {Symbols.star}, color: .blue, trailing: {})
                     })
                     
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Contact Support", icon: Symbols.question, color: .green)
+                    Button(action: {
+                        let email = "ifeanyi@gmail.com"
+                        if let url = URL(string: "mailto:\(email)") {
+                            UIApplication.shared.open(url)
+                        }
+                    }, label: {
+                        SettingsItem(title: "Contact Support", icon: {Symbols.question}, color: .green, trailing: {})
                     })
                     
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Share The App", icon: Symbols.share, color: .mint)
-                    })
-                }
-                
-                Text("Legal")
-                    .fontWeight(.semibold)
-                GroupBox {
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Privacy Policy", icon: Symbols.shield, color: .purple)
-                    })
-                    
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "Terms of Service", icon: Symbols.doc_ol, color: .cyan)
-                    })
+                    ShareLink(item: storeLink) {
+                        SettingsItem(title: "Share App", icon: {Symbols.share}, color: .orange, trailing: {})
+                    }
                 }
                 
                 Text("About")
                     .fontWeight(.semibold)
                 GroupBox {
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "What's New", icon: Symbols.new, color: .red)
+                    Button(action: {
+                        showWhatsNew.toggle()
+                    }, label: {
+                        SettingsItem(title: "What's New", icon: {Symbols.new}, color: .red, trailing: {})
                     })
                     
-                    NavigationLink(value: Routes.settingstwo, label: {
-                        SettingsItem(title: "About This App", icon: Symbols.info, color: .black)
+                    NavigationLink(value: Routes.aboutAppView, label: {
+                        SettingsItem(title: "About App", icon: {Symbols.info}, color: .black, trailing: {})
                     })
+                }
+                
+                if Bundle.appVersion != nil {
+                    HStack {
+                        Spacer()
+                        Text("VER \(Bundle.appVersion!)")
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
                 }
                 
                 Spacer(minLength: 100)
@@ -74,10 +77,12 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .padding()
         }
+        .sheet(isPresented: $showWhatsNew) {
+            WhatsNewView()
+                .presentationDetents([.medium, .large])
+        }
+        .task {
+            speechService.initTTSVoices()
+        }
     }
-}
-
-#Preview {
-    SettingsView()
-        .environment(Router.shared)
 }

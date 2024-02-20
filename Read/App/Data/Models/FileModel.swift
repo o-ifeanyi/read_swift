@@ -18,7 +18,7 @@ final class FileModel {
     let date: Date = Date.now
     let path: String
     let progress: Int = 0
-    var folder: String? = nil
+    var parent: String? = nil
     
     init(name: String, type: LibraryType, path: String) {
         self.name = name
@@ -35,5 +35,9 @@ final class FileModel {
         case .url:
             Symbols.link
         }
+    }
+    
+    var fullPath: String {
+        URL.documentsDirectory.path() + path
     }
 }

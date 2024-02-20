@@ -9,17 +9,15 @@ import SwiftUI
 import SwiftData
 import PDFKit
 
-enum ListStyle { case list, grid }
-
 struct LibraryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(Router.self) private var router
     @Environment(SpeechService.self) private var speechService
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
+    @AppStorage(Constants.displayStyle) private var displayStyle = DisplayStyle.grid
 
     let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
     
-    @State private var listStyle: ListStyle = .grid
     @State private var createFolder: Bool = false
     @State private var renameItem: Bool = false
     
@@ -59,8 +57,8 @@ struct LibraryView: View {
     
     var body: some View {
         let allCount = selectedFiles.count + selectedFolders.count
-        let files = searching ? libraryViewModel.state.searchedFiles : libraryViewModel.state.files
-        let folders = searching ? libraryViewModel.state.searchedFolders : libraryViewModel.state.folders
+        let files = searching ? libraryVM.state.searchedFiles : libraryVM.state.files
+        let folders = searching ? libraryVM.state.searchedFolders : libraryVM.state.folders
         
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
@@ -68,11 +66,13 @@ struct LibraryView: View {
                     Text("Folders")
                         .fontWeight(.semibold)
                     
-                    switch listStyle {
+                    switch displayStyle {
                     case .list:
                         ForEach(folders) { folder in
+                            let count = libraryVM.getFolderFilesCount(id: folder.id)
+                            
                             ListTileView(asset: Symbols.folder
-                                .font(.title), title: folder.name, subtitle: "\(folder.date.dwdm)")
+                                .font(.title), title: folder.name, subtitle: "\(count) items • \(folder.date.dwdm)")
                             .onTapGesture { onFolderTapped(folder: folder) }
                             .onLongPressGesture {
                                 if !isSelecting {
@@ -91,8 +91,10 @@ struct LibraryView: View {
                     case .grid:
                         LazyVGrid(columns: gridColumn) {
                             ForEach(folders) { folder in
+                                let count = libraryVM.getFolderFilesCount(id: folder.id)
+                                
                                 GridTileView(asset: Symbols.folder
-                                    .font(.title), title: folder.name, subtitle: "\(folder.date.dwdm)")
+                                    .font(.title), title: folder.name, subtitle: "\(count) items\n\(folder.date.dwdm)")
                                 .onTapGesture { onFolderTapped(folder: folder) }
                                 .onLongPressGesture {
                                     if !isSelecting {
@@ -117,7 +119,7 @@ struct LibraryView: View {
                     Text("Files")
                         .fontWeight(.semibold)
                     
-                    switch listStyle {
+                    switch displayStyle {
                     case .list:
                         ForEach(files) { file in
                             ListTileView(asset: file.icon.font(.title), title: file.name, subtitle: "\(file.type) • \(file.progress)% • \(file.date.dwdm)")
@@ -166,22 +168,22 @@ struct LibraryView: View {
             .onChange(of: searchText) {
                 searching = !searchText.isEmpty
                 if !searchText.isEmpty {
-                    libraryViewModel.search(query: searchText)
+                    libraryVM.search(query: searchText)
                 }
             }
             .toolbar {
                 if isSelecting {
                     SelectingToolBar(isSelecting: $isSelecting, moveFiles: $moveFiles, renameItem: $renameItem, selectedFiles: $selectedFiles, selectedFolders: $selectedFolders, files: files, folders: folders)
                 } else {
-                    DefaultToolBar(isSelecting: $isSelecting, createFolder: $createFolder, listStyle: $listStyle)
+                    DefaultToolBar(isSelecting: $isSelecting, createFolder: $createFolder, displayStyle: $displayStyle)
                 }
             }
             .sheet(isPresented: $createFolder) {
-                CreateFolderView()
+                CreateFolderSheet()
                     .presentationDetents([.medium])
             }
             .sheet(isPresented: $renameItem) {
-                RenameView(file: selectedFiles.first, folder: selectedFolders.first)
+                RenameSheet(file: selectedFiles.first, folder: selectedFolders.first)
                     .onDisappear {
                         withAnimation(.spring) {
                             isSelecting = false
@@ -202,8 +204,8 @@ struct LibraryView: View {
                     }
             }
             .task {
-                libraryViewModel.getAllFolders()
-                libraryViewModel.getAllFiles()
+                libraryVM.getAllFolders()
+                libraryVM.getAllFiles()
             }
         }
         .padding(.horizontal, 15)

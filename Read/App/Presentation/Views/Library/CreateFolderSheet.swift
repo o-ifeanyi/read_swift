@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CreateFolderView: View {
+struct CreateFolderSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(LibraryViewModel.self) private var libraryViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     
     @FocusState private var fieldIsFocused: Bool
     @State private var name: String = ""
@@ -20,20 +20,13 @@ struct CreateFolderView: View {
                 Form {
                     TextField("Name", text: $name)
                         .focused($fieldIsFocused)
-                    Button(action: {
-                        Task {
-                            let folder = FolderModel(name: name)
-                            libraryViewModel.insertItem(folder: folder)
-                            dismiss()
-                        }
-                    }, label: {
-                        Spacer()
-                        Text("Continue")
-                            .padding(.vertical, 8)
-                        Spacer()
+                    
+                    AppButton(text: "Continue", action: {
+                        let folder = FolderModel(name: name)
+                        libraryVM.insertItem(folder: folder)
+                        dismiss()
                     })
                     .disabled(name.isEmpty)
-                    .buttonStyle(.borderedProminent)
                 }
                 
             }
@@ -45,7 +38,7 @@ struct CreateFolderView: View {
                     }
                 }
             }
-            .onAppear {
+            .task {
                 fieldIsFocused = true
             }
         }

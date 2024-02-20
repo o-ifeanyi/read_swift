@@ -19,11 +19,12 @@ struct ListTileView<Asset: View>: View {
                     asset!
                 }
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text(title)
                         .fontWeight(.semibold)
+                    
                     Text(subtitle)
-                        .font(.caption)
+                        .font(.subheadline)
                         .multilineTextAlignment(.leading)
                 }
                 Spacer()

@@ -13,6 +13,7 @@ struct HomeView: View {
     @Environment(LibraryViewModel.self) private var libraryVM
     @Environment(SettingsViewModel.self) private var settingsVM
     @Environment(SpeechService.self) private var speechService
+    @Environment(SnackBarService.self) private var snackbar
     
     @State private var pickDoc: Bool = false
     
@@ -67,6 +68,7 @@ struct HomeView: View {
                 speechService.updateModel(file)
             }
             catch{
+                snackbar.displayMessage(error.localizedDescription)
                 print("error reading file \(error.localizedDescription)")
             }
         }
@@ -85,10 +87,11 @@ struct HomeView: View {
                         libraryVM.insertItem(file: file)
                         speechService.updateModel(file)
                     } catch {
-                        print("error writing to url")
+                        snackbar.displayMessage(error.localizedDescription)
                         print(error.localizedDescription)
                     }
                 } else {
+                    snackbar.displayMessage("Failed to process image")
                     print("Failed")
                 }
             }

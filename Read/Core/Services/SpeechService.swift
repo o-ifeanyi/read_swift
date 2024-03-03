@@ -128,6 +128,8 @@ final class SpeechService: NSObject {
         utterance.voice = state.voices.first(where: { $0.identifier == UserDefaults.standard.value(forKey: Constants.voice) as? String}) ?? AVSpeechSynthesisVoice(language: "en-GB")
         utterance.rate = UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5
         
+        NotificationService.shared.showMediaStyleNotification()
+        
         synthesizer.delegate = self
         synthesizer.speak(utterance)
     }

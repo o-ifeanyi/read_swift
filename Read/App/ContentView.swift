@@ -14,6 +14,8 @@ struct ContentView: View {
     @Environment(Router.self) private var router
     @Environment(SnackBarService.self) private var snackbarService
     
+    @State private var expanded: Bool = false
+    
     var body: some View {
         @Bindable var router = router
         ZStack(alignment: .bottom) {
@@ -49,7 +51,21 @@ struct ContentView: View {
                 }
             }
             
-            PlayerView()
+            PlayerView(expanded: $expanded)
+                .onTapGesture {
+                    withAnimation(.spring) {
+                        expanded = true
+                    }
+                }
+            
+            if expanded {
+                SpeechScreen {
+                    withAnimation(.spring) {
+                        expanded = false
+                    }
+                }
+                .transition(.push(from: .bottom))
+            }
         }
         .overlay(alignment: .top) {
             if (snackbarService.state != nil) {

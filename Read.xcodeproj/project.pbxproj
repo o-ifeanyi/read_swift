@@ -52,10 +52,12 @@
 		1EA862C02B61C5CC00F459EC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1EA862BF2B61C5CC00F459EC /* SwiftSoup */; };
 		1EB92D7E2B71216500CD5FCF /* DefaultToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB92D7D2B71216500CD5FCF /* DefaultToolBar.swift */; };
 		1EC4949E2B6E6EC700058BAF /* FileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4949D2B6E6EC700058BAF /* FileModel.swift */; };
+		1EC4DEFB2B8A2CC40047C1DF /* WaveForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4DEFA2B8A2CC40047C1DF /* WaveForm.swift */; };
 		1EDE7C7B2B6FE7E600D50213 /* SelectingToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDE7C7A2B6FE7E600D50213 /* SelectingToolBar.swift */; };
 		1EE20C7C2B62828000104CC7 /* TextParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE20C7B2B62828000104CC7 /* TextParser.swift */; };
 		1EE20C7E2B62831300104CC7 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE20C7D2B62831300104CC7 /* SpeechService.swift */; };
 		1EE20C802B62892D00104CC7 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE20C7F2B62892D00104CC7 /* PlayerView.swift */; };
+		1EF5B91F2B8B9A7900116C68 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,12 +123,15 @@
 		1EA3A8BE2B5C05DE00B1024F /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		1EA3A8C02B5C0B5000B1024F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		1EA3A8C22B5C185600B1024F /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
+		1EAE77ED2B91472400DC0855 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1EB92D7D2B71216500CD5FCF /* DefaultToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultToolBar.swift; sourceTree = "<group>"; };
 		1EC4949D2B6E6EC700058BAF /* FileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileModel.swift; sourceTree = "<group>"; };
+		1EC4DEFA2B8A2CC40047C1DF /* WaveForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveForm.swift; sourceTree = "<group>"; };
 		1EDE7C7A2B6FE7E600D50213 /* SelectingToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectingToolBar.swift; sourceTree = "<group>"; };
 		1EE20C7B2B62828000104CC7 /* TextParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextParser.swift; sourceTree = "<group>"; };
 		1EE20C7D2B62831300104CC7 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
 		1EE20C7F2B62892D00104CC7 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +191,7 @@
 				1E3BF8E62B758FED001F87DB /* SettingsItem.swift */,
 				1E28DBB22B80EB3D00B52A01 /* VoiceSelectorSheet.swift */,
 				1E6CF05E2B85657900CE4211 /* AppButton.swift */,
+				1EC4DEFA2B8A2CC40047C1DF /* WaveForm.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -231,6 +237,7 @@
 		1EA3A8642B5BDDA400B1024F /* Read */ = {
 			isa = PBXGroup;
 			children = (
+				1EAE77ED2B91472400DC0855 /* Info.plist */,
 				1EA3A8932B5BE27600B1024F /* Resource */,
 				1EA3A8922B5BE24B00B1024F /* Core */,
 				1EA3A8912B5BE23500B1024F /* App */,
@@ -301,6 +308,7 @@
 				1EA3A89C2B5BE31B00B1024F /* SnackBarService.swift */,
 				1EE20C7D2B62831300104CC7 /* SpeechService.swift */,
 				1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */,
+				1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -537,6 +545,7 @@
 				1E28DBB52B80F08700B52A01 /* WhatsNewView.swift in Sources */,
 				1EC4949E2B6E6EC700058BAF /* FileModel.swift in Sources */,
 				1E75D72E2B7056BF00BC0051 /* EnterUrlSheet.swift in Sources */,
+				1EF5B91F2B8B9A7900116C68 /* NotificationService.swift in Sources */,
 				1E3BF8E72B758FED001F87DB /* SettingsItem.swift in Sources */,
 				1E0A3B9C2B71A44E00C173FB /* RenameSheet.swift in Sources */,
 				1EDE7C7B2B6FE7E600D50213 /* SelectingToolBar.swift in Sources */,
@@ -552,6 +561,7 @@
 				1E9CA7812B6679B1006DB304 /* SpeechScreen.swift in Sources */,
 				1EA3A8C32B5C185600B1024F /* AppearanceView.swift in Sources */,
 				1EA3A8662B5BDDA400B1024F /* ReadApp.swift in Sources */,
+				1EC4DEFB2B8A2CC40047C1DF /* WaveForm.swift in Sources */,
 				1E75D72C2B703A7800BC0051 /* CreateFolderSheet.swift in Sources */,
 				1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */,
 				1E2B43EC2B6AFAF7000BBEF6 /* CustomSliderSheet.swift in Sources */,
@@ -733,6 +743,7 @@
 				DEVELOPMENT_TEAM = YYA8WP4LNJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Read/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photos to upload photos from your library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -763,6 +774,7 @@
 				DEVELOPMENT_TEAM = YYA8WP4LNJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Read/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photos to upload photos from your library.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -10,9 +10,10 @@ import AVFAudio
 
 struct SpeechScreen: View {
     @Environment(SpeechService.self) private var speechService
-    @Binding var expanded: Bool
     @State private var showVoicesSheet: Bool = false
     @State private var showRateSheet: Bool = false
+    
+    let onClose: () -> Void
     
     var body: some View {
         let state = speechService.state
@@ -76,12 +77,7 @@ struct SpeechScreen: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Symbols.down
-                        .onTapGesture {
-                            withAnimation(.snappy(duration: 0.5)) {
-                                $expanded.wrappedValue = false
-                            }
-                            
-                        }
+                        .onTapGesture { onClose() }
                 }
             }
             .sheet(isPresented: $showVoicesSheet) {

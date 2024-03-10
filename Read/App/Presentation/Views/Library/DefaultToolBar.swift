@@ -19,7 +19,7 @@ struct DefaultToolBar: ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Menu(content: {
                 Button(action: {
-                    createFolder.toggle()
+                    createFolder = true
                 }, label: {
                     Label("New Folder", systemImage: "folder.badge.plus")
                 })
@@ -40,7 +40,7 @@ struct DefaultToolBar: ToolbarContent {
                 }
                 Button(action: {
                     withAnimation(.spring) {
-                        isSelecting.toggle()
+                        isSelecting = true
                     }
                 }, label: {
                     Label("Select Multiple", systemImage: "checklist")

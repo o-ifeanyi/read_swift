@@ -24,7 +24,6 @@ final class LibraryViewModel {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        print("INIT RAN")
     }
     
     func getAllFiles() {

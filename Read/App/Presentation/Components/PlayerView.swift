@@ -12,41 +12,47 @@ struct PlayerView: View {
     @Binding var expanded: Bool
     
     var body: some View {
+        let state = speechService.state
+        
         VStack(spacing: 10) {
-            HStack(spacing: 10) {
-                WaveForm(animating: !expanded && speechService.state.isPlaying)
+            HStack(spacing: 15) {
+                WaveForm(animating: !expanded && state.isPlaying)
+                
+                if state.model != nil {
+                    Text(state.model!.name)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                }
                 
                 Spacer()
                 
-                Symbols.stop
-                    .font(.title2)
-                    .onTapGesture {
-                        speechService.stop()
-                    }
 
-                if speechService.state.isPlaying {
-                    Symbols.pause
-                        .font(.title2)
-                        .onTapGesture {
-                            speechService.pause()
-                        }
+                if state.isPlaying {
+                    Button(action: {
+                        speechService.pause()
+                    }, label: {
+                        Symbols.pause
+                            .font(.title2)
+                    })
                 } else {
-                    Symbols.play
-                        .font(.title2)
-                        .onTapGesture {
-                            speechService.play()
-                        }
+                    Button(action: {
+                        speechService.play()
+                    }, label: {
+                        Symbols.play
+                            .font(.title2)
+                    })
                 }
             }
-            ProgressView(value: speechService.state.progress)
+            ProgressView(value: state.progress)
         }
         
-        .padding(8)
+        .padding(10)
         .background(.thinMaterial)
         .cornerRadius(8)
-        .padding(.horizontal, 8)
-        .padding(.bottom, speechService.state.canPlay ? 56 : -56)
-        .opacity(speechService.state.canPlay ? 1.0 : 0.0)
-        .animation(.spring(duration: 0.3), value: speechService.state.canPlay)
+        .padding(.horizontal, 10)
+        .padding(.bottom, state.canPlay ? 56 : -56)
+        .opacity(state.canPlay ? 1.0 : 0.0)
+        .animation(.spring(duration: 0.3), value: state.canPlay)
     }
 }

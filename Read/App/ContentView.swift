@@ -74,8 +74,5 @@ struct ContentView: View {
         }
         .preferredColorScheme(theme.overrideTheme)
         .environment(\.colorScheme, theme.overrideTheme ?? scheme)
-        .task {
-            print(scheme)
-        }
     }
 }

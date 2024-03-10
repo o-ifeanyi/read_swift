@@ -53,7 +53,7 @@ struct SettingsView: View {
                     .fontWeight(.semibold)
                 GroupBox {
                     Button(action: {
-                        showWhatsNew.toggle()
+                        showWhatsNew = true
                     }, label: {
                         SettingsItem(title: "What's New", icon: {Symbols.new}, color: .red, trailing: {})
                     })

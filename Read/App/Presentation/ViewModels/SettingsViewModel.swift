@@ -21,7 +21,6 @@ final class SettingsViewModel {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        print("SETTINGS INIT RAN")
         checkWhatsNew(id: latestUpdate.id)
         getAllUpdates()
     }

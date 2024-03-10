@@ -29,6 +29,7 @@
 		1E75D72E2B7056BF00BC0051 /* EnterUrlSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D72D2B7056BF00BC0051 /* EnterUrlSheet.swift */; };
 		1E75D7322B706E0200BC0051 /* MoveFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D7312B706E0200BC0051 /* MoveFilesView.swift */; };
 		1E75D7342B70724700BC0051 /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D7332B70724700BC0051 /* FolderView.swift */; };
+		1E853D332B9C7AB400F2700A /* GoToPageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E853D322B9C7AB400F2700A /* GoToPageSheet.swift */; };
 		1E9CA77D2B667091006DB304 /* ListTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA77C2B667091006DB304 /* ListTileView.swift */; };
 		1E9CA7812B6679B1006DB304 /* SpeechScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */; };
 		1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9CA7822B668AF4006DB304 /* Extentions.swift */; };
@@ -45,7 +46,6 @@
 		1EA3A8AD2B5BED9C00B1024F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */; };
 		1EA3A8B02B5BEDB600B1024F /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8AF2B5BEDB600B1024F /* LibraryView.swift */; };
 		1EA3A8B32B5BEDD500B1024F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8B22B5BEDD500B1024F /* SettingsView.swift */; };
-		1EA3A8B52B5BF3F800B1024F /* HomeViewTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8B42B5BF3F800B1024F /* HomeViewTwo.swift */; };
 		1EA3A8BF2B5C05DE00B1024F /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8BE2B5C05DE00B1024F /* Routes.swift */; };
 		1EA3A8C12B5C0B5000B1024F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8C02B5C0B5000B1024F /* Router.swift */; };
 		1EA3A8C32B5C185600B1024F /* AppearanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8C22B5C185600B1024F /* AppearanceView.swift */; };
@@ -100,6 +100,7 @@
 		1E75D72D2B7056BF00BC0051 /* EnterUrlSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUrlSheet.swift; sourceTree = "<group>"; };
 		1E75D7312B706E0200BC0051 /* MoveFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFilesView.swift; sourceTree = "<group>"; };
 		1E75D7332B70724700BC0051 /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
+		1E853D322B9C7AB400F2700A /* GoToPageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToPageSheet.swift; sourceTree = "<group>"; };
 		1E9CA77C2B667091006DB304 /* ListTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTileView.swift; sourceTree = "<group>"; };
 		1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechScreen.swift; sourceTree = "<group>"; };
 		1E9CA7822B668AF4006DB304 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
@@ -119,7 +120,6 @@
 		1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1EA3A8AF2B5BEDB600B1024F /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		1EA3A8B22B5BEDD500B1024F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		1EA3A8B42B5BF3F800B1024F /* HomeViewTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewTwo.swift; sourceTree = "<group>"; };
 		1EA3A8BE2B5C05DE00B1024F /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		1EA3A8C02B5C0B5000B1024F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		1EA3A8C22B5C185600B1024F /* AppearanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceView.swift; sourceTree = "<group>"; };
@@ -210,6 +210,7 @@
 			children = (
 				1E9CA7802B6679B1006DB304 /* SpeechScreen.swift */,
 				1E0CED752B6BEA74000D9B6C /* HighlightedTextView.swift */,
+				1E853D322B9C7AB400F2700A /* GoToPageSheet.swift */,
 			);
 			path = Speech;
 			sourceTree = "<group>";
@@ -327,7 +328,6 @@
 			isa = PBXGroup;
 			children = (
 				1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */,
-				1EA3A8B42B5BF3F800B1024F /* HomeViewTwo.swift */,
 				1E75D72D2B7056BF00BC0051 /* EnterUrlSheet.swift */,
 			);
 			path = Home;
@@ -563,6 +563,7 @@
 				1EA3A8662B5BDDA400B1024F /* ReadApp.swift in Sources */,
 				1EC4DEFB2B8A2CC40047C1DF /* WaveForm.swift in Sources */,
 				1E75D72C2B703A7800BC0051 /* CreateFolderSheet.swift in Sources */,
+				1E853D332B9C7AB400F2700A /* GoToPageSheet.swift in Sources */,
 				1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */,
 				1E2B43EC2B6AFAF7000BBEF6 /* CustomSliderSheet.swift in Sources */,
 				1E60C4602B84C18D00F9EBCE /* WhatsNewModel.swift in Sources */,
@@ -573,7 +574,6 @@
 				1E2B43EA2B6A9CCB000BBEF6 /* GridTileView.swift in Sources */,
 				1EA3A8B32B5BEDD500B1024F /* SettingsView.swift in Sources */,
 				1E9CA77D2B667091006DB304 /* ListTileView.swift in Sources */,
-				1EA3A8B52B5BF3F800B1024F /* HomeViewTwo.swift in Sources */,
 				1EA3A8B02B5BEDB600B1024F /* LibraryView.swift in Sources */,
 				1E28DBB12B80D8F900B52A01 /* Constants.swift in Sources */,
 				1E28DBAF2B80BBB500B52A01 /* SettingsViewModel.swift in Sources */,

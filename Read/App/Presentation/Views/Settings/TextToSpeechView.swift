@@ -20,7 +20,7 @@ struct TextToSpeechView: View {
             VStack(alignment: .leading, spacing: 15) {
                 GroupBox {
                     Button(action: {
-                        showVoicesSheet.toggle()
+                        showVoicesSheet = true
                     }, label: {
                         SettingsItem(title: "Speaker Voice", icon: {Symbols.speaker}, color: .orange, trailing: {
                             let voice = speechService.state.voices.first(where: { $0.identifier == voiceIdentifier}) ?? AVSpeechSynthesisVoice(language: "en-GB")
@@ -29,7 +29,7 @@ struct TextToSpeechView: View {
                     })
                     
                     Button(action: {
-                        showRateSheet.toggle()
+                        showRateSheet = true
                     }, label: {
                         SettingsItem(title: "Speech Rate", icon: {Symbols.speed}, color: .blue, trailing: {
                             Text(String(format: "%.1f", speechRate))
@@ -43,14 +43,14 @@ struct TextToSpeechView: View {
         .sheet(isPresented: $showVoicesSheet) {
             VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet) { voice in
                 UserDefaults.standard.setValue(voice.identifier, forKey: Constants.voice)
-                showVoicesSheet.toggle()
+                showVoicesSheet = false
             }
             .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showRateSheet) {
             CustomSliderSheet(progress: UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5) { result in
-                showRateSheet.toggle()
                 UserDefaults.standard.setValue(result, forKey: Constants.speechRate)
+                showRateSheet = false
             }
             .presentationDetents([.medium])
         }

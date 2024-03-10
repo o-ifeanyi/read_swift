@@ -10,6 +10,7 @@ import AVFAudio
 
 struct SpeechScreen: View {
     @Environment(SpeechService.self) private var speechService
+    @State private var showPageSheet: Bool = false
     @State private var showVoicesSheet: Bool = false
     @State private var showRateSheet: Bool = false
     
@@ -23,9 +24,9 @@ struct SpeechScreen: View {
                     VStack {
                         if state.canPlay {
                             HighlightedTextView(text: state.text, highlightedRange: state.wordRange)
-                                .frame(minHeight: UIScreen.height)
                         }
                     }
+                    .frame(minHeight: UIScreen.height)
                 }
                 ProgressView(value: speechService.state.progress)
                 HStack {
@@ -33,7 +34,7 @@ struct SpeechScreen: View {
                     Symbols.speaker
                         .font(.title2)
                         .onTapGesture {
-                            showVoicesSheet.toggle()
+                            showVoicesSheet = true
                         }
                     Spacer()
                     Symbols.rewind
@@ -67,23 +68,47 @@ struct SpeechScreen: View {
                     Symbols.speed
                         .font(.title2)
                         .onTapGesture {
-                            showRateSheet.toggle()
+                            showRateSheet = true
                         }
                     Spacer()
+                }
+            }
+            .onTapGesture { location in
+                let width = UIScreen.width
+                if location.x <= width * 0.35 {
+                    speechService.prevPage()
+                } else if location.x >= width * 0.65 {
+                    speechService.nextPage()
                 }
             }
             .padding(.horizontal, 15)
             .navigationTitle("Player")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Symbols.down
-                        .onTapGesture { onClose() }
+                    Button(action: { onClose() }, label: {
+                        Symbols.down
+                    })
                 }
+                if state.model != nil {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        let model = state.model!
+                        Button(action: {
+                            showPageSheet = true
+                        }, label: {
+                            Text("Page \(model.currentPage) of \(model.totalPages)")
+                                .fontWeight(.semibold)
+                        })
+                    }
+                }
+            }
+            .sheet(isPresented: $showPageSheet) {
+                GoToPageSheet()
+                    .presentationDetents([.medium])
             }
             .sheet(isPresented: $showVoicesSheet) {
                 VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet) { voice in
                     UserDefaults.standard.setValue(voice.identifier, forKey: Constants.voice)
-                    showVoicesSheet.toggle()
+                    showVoicesSheet = false
                     speechService.stopAndPlay()
                 }
                 .presentationDetents([.medium, .large])
@@ -91,7 +116,7 @@ struct SpeechScreen: View {
             .sheet(isPresented: $showRateSheet) {
                 CustomSliderSheet(progress: UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5) { result in
                     UserDefaults.standard.setValue(result, forKey: Constants.speechRate)
-                    showRateSheet.toggle()
+                    showRateSheet = false
                     speechService.stopAndPlay()
                 }
                 .presentationDetents([.medium])

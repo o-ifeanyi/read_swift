@@ -25,7 +25,7 @@ struct SelectingToolBar: ToolbarContent {
                 selectedFiles = []
                 selectedFolders = []
                 withAnimation(.spring) {
-                    isSelecting.toggle()
+                    isSelecting = false
                 }
             }
         }
@@ -56,7 +56,7 @@ struct SelectingToolBar: ToolbarContent {
                         selectedFiles = []
                         selectedFolders = []
                         withAnimation(.spring) {
-                            isSelecting.toggle()
+                            isSelecting = false
                         }
                     }
                 }, label: {
@@ -64,7 +64,7 @@ struct SelectingToolBar: ToolbarContent {
                 })
                 if !selectedFiles.isEmpty {
                     Button(action: {
-                        moveFiles.toggle()
+                        moveFiles = true
                     }, label: {
                         Label("Move to folder", systemImage: "folder")
                     })
@@ -72,7 +72,7 @@ struct SelectingToolBar: ToolbarContent {
                 if allCount == 1 {
                     Button(action: {
                         withAnimation(.spring) {
-                            renameItem.toggle()
+                            renameItem = true
                         }
                     }, label: {
                         Label("Rename", systemImage: "square.and.pencil")

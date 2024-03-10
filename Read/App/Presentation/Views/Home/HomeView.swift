@@ -27,7 +27,7 @@ struct HomeView: View {
             VStack(spacing: 10) {
                 ListTileView(asset: Symbols.doc.resizable().frame(width: 40, height: 40),title: "Pick document", subtitle: "SizeTransform defines how the size")
                     .onTapGesture {
-                        pickDoc.toggle()
+                        pickDoc = true
                     }
                 PhotosPicker(selection: $imageItem, matching: .images, photoLibrary: .shared()) {
                     ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "SizeTransform defines how the size")
@@ -35,7 +35,7 @@ struct HomeView: View {
                 
                 ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "SizeTransform defines how the size")
                     .onTapGesture {
-                        showTextField.toggle()
+                        showTextField = true
                     }
                 
                 Spacer(minLength: 100)
@@ -60,6 +60,9 @@ struct HomeView: View {
                 let url = try result.get()
                 let docUrl = URL.documentsDirectory.appending(path: url.name)
                 
+                // needed to prevent error reading file issue
+                let _ = url.startAccessingSecurityScopedResource()
+                
                 try FileManager.default.copyItem(at: url, to: docUrl)
                 
                 let file = FileModel(name: docUrl.name, type: .pdf, path: docUrl.lastPathComponent)
@@ -82,7 +85,7 @@ struct HomeView: View {
                     let url = URL.documentsDirectory.appending(path: "image.jpg")
                     do {
                         try loaded.write(to: url, options: [.atomic, .completeFileProtection])
-                        let file = FileModel(name: url.name, type: .image, path: url.lastPathComponent)
+                        let file = FileModel(name: url.name, type: .img, path: url.lastPathComponent)
                         // TODO: should be inserted on success of update model
                         libraryVM.insertItem(file: file)
                         speechService.updateModel(file)

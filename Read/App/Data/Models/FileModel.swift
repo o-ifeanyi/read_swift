@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-enum LibraryType: Codable { case pdf, image, url }
+enum LibraryType: Codable { case pdf, img, url }
 
 @Model
 final class FileModel {
@@ -17,7 +17,11 @@ final class FileModel {
     let type: LibraryType
     let date: Date = Date.now
     let path: String
-    let progress: Int = 0
+    var wordRange: [Int] = []
+    var wordIndex: Int = 0
+    var progress: Int = 0
+    var currentPage: Int = 1
+    var totalPages: Int = 1
     var parent: String? = nil
     
     init(name: String, type: LibraryType, path: String) {
@@ -30,7 +34,7 @@ final class FileModel {
         switch type {
         case .pdf:
             Symbols.doc
-        case .image:
+        case .img:
             Symbols.photo
         case .url:
             Symbols.link
@@ -39,5 +43,13 @@ final class FileModel {
     
     var fullPath: String {
         URL.documentsDirectory.path() + path
+    }
+    
+    var absProgress: Int {
+        if totalPages > 1 {
+            let value = (Double(currentPage) / Double(totalPages)) * 100
+            return Int(value)
+        }
+        return progress
     }
 }

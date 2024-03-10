@@ -22,7 +22,7 @@ struct WaveForm: View {
                 let height = (index < 2 || index > 3 ? CGFloat.random(in: 0.2...0.4) : CGFloat.random(in: 0.4...0.8)) * 50
                 
                 RoundedRectangle(cornerRadius: 6)
-                    .frame(width: 4, height: animating ? height : 6)
+                    .frame(width: 4, height: animating ? height : 3)
                     .animation(animation, value: animating)
             }
         }

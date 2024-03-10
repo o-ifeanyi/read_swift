@@ -122,7 +122,7 @@ struct LibraryView: View {
                     switch displayStyle {
                     case .list:
                         ForEach(files) { file in
-                            ListTileView(asset: file.icon.font(.title), title: file.name, subtitle: "\(file.type) • \(file.progress)% • \(file.date.dwdm)")
+                            ListTileView(asset: file.icon.font(.title), title: file.name, subtitle: "\(file.type) • \(file.absProgress)% • \(file.date.dwdm)")
                                 .onTapGesture { onFileTapped(file: file) }
                                 .onLongPressGesture {
                                     if !isSelecting {
@@ -141,7 +141,7 @@ struct LibraryView: View {
                     case .grid:
                         LazyVGrid(columns: gridColumn) {
                             ForEach(files) { file in
-                                GridTileView(asset: file.icon, title: file.name, subtitle: "\(file.type) • \(file.progress)%\n\(file.date.dwdm)")
+                                GridTileView(asset: file.icon, title: file.name, subtitle: "\(file.type) • \(file.absProgress)%\n\(file.date.dwdm)")
                                     .onTapGesture { onFileTapped(file: file) }
                                     .onLongPressGesture {
                                         if !isSelecting {

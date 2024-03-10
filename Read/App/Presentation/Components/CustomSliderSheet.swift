@@ -62,8 +62,3 @@ struct CustomSliderSheet: View {
         }
     }
 }
-
-#Preview {
-    CustomSliderSheet(progress: 0.5) { result in
-    }
-}

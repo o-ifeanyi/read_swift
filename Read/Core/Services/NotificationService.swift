@@ -11,46 +11,56 @@ import MediaPlayer
 
 final class NotificationService {
     static let shared = NotificationService()
+    var setup: Bool = false
     
     func showMediaStyleNotification() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("Error setting the AVAudioSession:", error.localizedDescription)
+        defer { setup = true }
+        
+        if !setup {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+                try AVAudioSession.sharedInstance().setActive(true)
+            } catch {
+                print("Error setting the AVAudioSession:", error.localizedDescription)
+            }
+            
+            let mediaController = MPMusicPlayerController.applicationMusicPlayer
+            mediaController.beginGeneratingPlaybackNotifications()
+            
+            let command = MPRemoteCommandCenter.shared()
+            command.skipBackwardCommand.isEnabled = true;
+            command.skipBackwardCommand.addTarget { event in
+                Task { await SpeechService.shared.rewind() }
+                return .success
+            }
+            command.playCommand.isEnabled = true;
+            command.playCommand.addTarget { event in
+                Task { await SpeechService.shared.play() }
+                return .success
+            }
+            command.pauseCommand.isEnabled = true;
+            command.pauseCommand.addTarget { event in
+                Task { await SpeechService.shared.pause() }
+                return .success
+            }
+            command.skipForwardCommand.isEnabled = true;
+            command.skipForwardCommand.addTarget { event in
+                Task { await SpeechService.shared.forward() }
+                return .success
+            }
         }
         
-        let mediaController = MPMusicPlayerController.applicationMusicPlayer
-        mediaController.beginGeneratingPlaybackNotifications()
+        let state = SpeechService.shared.state
+        let file = state.model
         
-        let command = MPRemoteCommandCenter.shared()
-        command.skipBackwardCommand.isEnabled = true;
-        command.skipBackwardCommand.addTarget { event in
-            print("rewind")
-            return .success
-        }
-        command.playCommand.isEnabled = true;
-        command.playCommand.addTarget { event in
-            print("play")
-            return .success
-        }
-        command.pauseCommand.isEnabled = true;
-        command.pauseCommand.addTarget { event in
-            print("pause")
-            return .success
-        }
-        command.skipForwardCommand.isEnabled = true;
-        command.skipForwardCommand.addTarget { event in
-            print("forward")
-            return .success
-        }
+        guard file != nil else { return }
         
         var nowPlayingInfo = [String : Any]()
         
-        nowPlayingInfo[MPMediaItemPropertyTitle] = "File Title"
-        nowPlayingInfo[MPMediaItemPropertyArtist] = "File Subtitle"
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 60
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = 120
+        nowPlayingInfo[MPMediaItemPropertyTitle] = "\(file!.name)"
+        nowPlayingInfo[MPMediaItemPropertyArtist] = "\(file!.type)"
+//        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = (file!.progress * 100)
+//        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = 100
         
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo

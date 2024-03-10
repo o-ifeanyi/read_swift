@@ -46,37 +46,32 @@ final class SpeechService: NSObject {
         switch model.type {
         case .pdf:
             let url = URL(fileURLWithPath: model.fullPath)
-            if let pdf = PDFDocument(url: url) {
-                TextParser.parsePdf(pdf: pdf, perform: { result in
-                    self.stop()
-                    self.state.text = result
-                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
-                    self.textCount = self.state.text.count
-                    self.play()
-                })
-            } else {
-                print("document not found")
-            }
-        case .image:
+            TextParser.parsePdf(url: url, page: model.currentPage, perform: { result, pageCount in
+                model.totalPages = pageCount
+                
+                self.stop()
+                self.state.text = result
+                self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                self.wordIndex = model.wordIndex
+                self.textCount = self.state.text.count
+                self.play()
+            })
+        case .img:
             let url = URL(fileURLWithPath: model.fullPath)
-            do {
-                let imageData = try Data.init(contentsOf: url)
-                let image = UIImage(data: imageData)
-                TextParser.parseImage(image: image, perform: { result in
-                    self.stop()
-                    self.state.text  = result
-                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
-                    self.textCount = self.state.text.count
-                    self.play()
-                })
-            } catch {
-                print(error.localizedDescription)
-            }
+            TextParser.parseImage(url: url, perform: { result in
+                self.stop()
+                self.state.text  = result
+                self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                self.wordIndex = model.wordIndex
+                self.textCount = self.state.text.count
+                self.play()
+            })
         case .url:
             TextParser.parseUrl(link: model.path, perform: { result in
                 self.stop()
                 self.state.text = result
                 self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
             })
@@ -120,9 +115,47 @@ final class SpeechService: NSObject {
         synthesizer.stopSpeaking(at: .immediate)
     }
     
+    
+    @MainActor
+    func nextPage() {
+        guard state.model != nil else { return }
+        guard state.model!.currentPage + 1 <= state.model!.totalPages else { return }
+        stop()
+        state.model!.currentPage = state.model!.currentPage + 1
+        state.model!.wordIndex = 0
+        state.model!.wordRange = []
+        updateModel(state.model!)
+    }
+    
+    
+    @MainActor
+    func prevPage() {
+        guard state.model != nil else { return }
+        guard state.model!.currentPage - 1 >= 1 else { return }
+        stop()
+        state.model!.currentPage = state.model!.currentPage - 1
+        state.model!.wordIndex = 0
+        state.model!.wordRange = []
+        updateModel(state.model!)
+    }
+    
+    
+    @MainActor
+    func goToPage(page: Int) {
+        guard state.model != nil else { return }
+        guard page >= 0 && page < state.model!.totalPages else { return }
+        stop()
+        state.model!.currentPage = page
+        state.model!.wordIndex = 0
+        state.model!.wordRange = []
+        updateModel(state.model!)
+    }
+    
     @MainActor
     func play() {
-        let spoken = state.text.index(state.text.startIndex, offsetBy: state.wordRange.lowerBound)
+        guard state.model != nil else { return }
+        
+        let spoken = state.text.index(state.text.startIndex, offsetBy: state.model!.wordRange.first ?? 0)
         let utterance = AVSpeechUtterance(string: String(state.text[spoken...]))
         initTTSVoices()
         utterance.voice = state.voices.first(where: { $0.identifier == UserDefaults.standard.value(forKey: Constants.voice) as? String}) ?? AVSpeechSynthesisVoice(language: "en-GB")
@@ -152,9 +185,13 @@ final class SpeechService: NSObject {
         let endIndex = state.text.distance(from: state.text.startIndex, to: range.upperBound)
         if endIndex > startIndex {
             let progress = Double(endIndex) / Double(textCount)
+            let range = NSRange(location: startIndex, length: endIndex - startIndex)
             
-            state.wordRange = NSRange(location: startIndex, length: endIndex - startIndex)
+            state.wordRange = range
             state.progress = progress
+            state.model?.progress = Int(Double(progress) * 100.0)
+            state.model?.wordIndex = wordIndex - 1
+            state.model?.wordRange = [range.lowerBound, range.location]
         }
     }
 }
@@ -162,20 +199,24 @@ final class SpeechService: NSObject {
 extension SpeechService: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         state.isPlaying = true
+        NotificationService.shared.showMediaStyleNotification()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didPause utterance: AVSpeechUtterance) {
         state.isPlaying = false
+        NotificationService.shared.showMediaStyleNotification()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didContinue utterance: AVSpeechUtterance) {
         state.isPlaying = true
+        NotificationService.shared.showMediaStyleNotification()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         state.isPlaying = false
+        NotificationService.shared.showMediaStyleNotification()
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
-        
         if (wordIndex < words.count) {
             updateProgress()
+            NotificationService.shared.showMediaStyleNotification()
         }
     }
 }

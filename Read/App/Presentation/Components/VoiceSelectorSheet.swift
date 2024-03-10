@@ -14,6 +14,7 @@ struct VoiceSelectorSheet: View {
     let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
     
     @Binding var showVoicesSheet: Bool
+    let initial: String?
     let onTap: (_ voice: AVSpeechSynthesisVoice) -> Void
     
     var body: some View {
@@ -22,7 +23,6 @@ struct VoiceSelectorSheet: View {
                 VStack {
                     LazyVGrid(columns: gridColumn) {
                         ForEach(speechService.state.voices, id: \.identifier) { voice in
-                            
                             
                             let gender = if voice.gender.rawValue == 0 {
                                 "unknown"
@@ -34,6 +34,12 @@ struct VoiceSelectorSheet: View {
                             let flag = voice.language.flag
                             GridTileView(asset: flag != nil ? Text(flag!) : nil, title: voice.name, subtitle: gender)
                                 .onTapGesture { onTap(voice) }
+                                .overlay(alignment: .topTrailing) {
+                                    if voice.identifier == initial {
+                                        Symbols.checkFill
+                                    }
+                                }
+                                
                         }
                     }
                 }

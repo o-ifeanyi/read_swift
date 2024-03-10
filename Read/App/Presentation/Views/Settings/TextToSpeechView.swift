@@ -41,9 +41,12 @@ struct TextToSpeechView: View {
             .padding()
         }
         .sheet(isPresented: $showVoicesSheet) {
-            VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet) { voice in
+            VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet, initial: voiceIdentifier) { voice in
                 UserDefaults.standard.setValue(voice.identifier, forKey: Constants.voice)
                 showVoicesSheet = false
+                if speechService.state.model != nil {
+                    speechService.stopAndPlay()
+                }
             }
             .presentationDetents([.medium, .large])
         }
@@ -51,6 +54,9 @@ struct TextToSpeechView: View {
             CustomSliderSheet(progress: UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5) { result in
                 UserDefaults.standard.setValue(result, forKey: Constants.speechRate)
                 showRateSheet = false
+                if speechService.state.model != nil {
+                    speechService.stopAndPlay()
+                }
             }
             .presentationDetents([.medium])
         }

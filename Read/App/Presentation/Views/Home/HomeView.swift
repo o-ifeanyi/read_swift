@@ -74,8 +74,7 @@ struct HomeView: View {
                 snackbar.displayMessage(error.localizedDescription)
                 print("error reading file \(error.localizedDescription)")
             }
-        }
-        )
+        })
         .onChange(of: imageItem) {
             guard imageItem != nil else {
                 return
@@ -98,6 +97,9 @@ struct HomeView: View {
                     print("Failed")
                 }
             }
+        }
+        .task {
+            speechService.initSpeechService()
         }
     }
 }

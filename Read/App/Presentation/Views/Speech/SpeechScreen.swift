@@ -10,6 +10,7 @@ import AVFAudio
 
 struct SpeechScreen: View {
     @Environment(SpeechService.self) private var speechService
+    @AppStorage(Constants.voice) private var voiceIdentifier = ""
     @State private var showPageSheet: Bool = false
     @State private var showVoicesSheet: Bool = false
     @State private var showRateSheet: Bool = false
@@ -106,7 +107,7 @@ struct SpeechScreen: View {
                     .presentationDetents([.medium])
             }
             .sheet(isPresented: $showVoicesSheet) {
-                VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet) { voice in
+                VoiceSelectorSheet(showVoicesSheet: $showVoicesSheet, initial: voiceIdentifier) { voice in
                     UserDefaults.standard.setValue(voice.identifier, forKey: Constants.voice)
                     showVoicesSheet = false
                     speechService.stopAndPlay()

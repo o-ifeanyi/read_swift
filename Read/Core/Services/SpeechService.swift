@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AVFoundation
-import PDFKit
 
 struct SpeechState {
     var text: String = ""
@@ -34,7 +33,7 @@ final class SpeechService: NSObject {
     private (set) var textCount: Int = 0
     
     @MainActor
-    func initTTSVoices() {
+    func initSpeechService() {
         guard state.voices.isEmpty else { return }
         state.voices = AVSpeechSynthesisVoice.speechVoices()
     }
@@ -143,7 +142,7 @@ final class SpeechService: NSObject {
     @MainActor
     func goToPage(page: Int) {
         guard state.model != nil else { return }
-        guard page >= 0 && page < state.model!.totalPages else { return }
+        guard page > 0 && page <= state.model!.totalPages else { return }
         stop()
         state.model!.currentPage = page
         state.model!.wordIndex = 0
@@ -157,7 +156,6 @@ final class SpeechService: NSObject {
         
         let spoken = state.text.index(state.text.startIndex, offsetBy: state.model!.wordRange.first ?? 0)
         let utterance = AVSpeechUtterance(string: String(state.text[spoken...]))
-        initTTSVoices()
         utterance.voice = state.voices.first(where: { $0.identifier == UserDefaults.standard.value(forKey: Constants.voice) as? String}) ?? AVSpeechSynthesisVoice(language: "en-GB")
         utterance.rate = UserDefaults.standard.value(forKey: Constants.speechRate) as? Float ?? 0.5
         
@@ -209,9 +207,12 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
         state.isPlaying = true
         NotificationService.shared.showMediaStyleNotification()
     }
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+    @MainActor func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         state.isPlaying = false
         NotificationService.shared.showMediaStyleNotification()
+        if _wordIndex >= _words.count - 1 {
+            nextPage()
+        }
     }
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
         if (wordIndex < words.count) {

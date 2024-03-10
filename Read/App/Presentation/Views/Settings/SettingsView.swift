@@ -81,8 +81,5 @@ struct SettingsView: View {
             WhatsNewView()
                 .presentationDetents([.medium, .large])
         }
-        .task {
-            speechService.initTTSVoices()
-        }
     }
 }

@@ -111,6 +111,9 @@ final class LibraryViewModel {
     
     func deleteItems(files: [FileModel]) {
         for file in files {
+            if FileManager.default.fileExists(atPath: file.fullPath) {
+               try? FileManager.default.removeItem(atPath: file.fullPath)
+            }
             modelContext.delete(file)
         }
         // from library

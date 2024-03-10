@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AppButton: View {
+    @Environment(\.colorScheme) private var scheme
     let text: String
     let action: () -> Void
     
@@ -20,6 +21,7 @@ struct AppButton: View {
             label: {
                 Spacer()
                 Text(text)
+                    .foregroundStyle(scheme == .dark ? .black : .white)
                     .padding(.vertical, 8)
                 Spacer()
             }

@@ -74,6 +74,12 @@ extension View {
             self
         }
     }
+    
+    func limitText(_ text: Binding<String>, to characterLimit: Int) -> some View {
+        self.onChange(of: text.wrappedValue, { old, new in
+            text.wrappedValue = String(text.wrappedValue.prefix(characterLimit))
+        })
+    }
 }
 
 extension Animation {

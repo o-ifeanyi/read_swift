@@ -72,6 +72,9 @@ struct ContentView: View {
                 SnackbarComponent(state: snackbarService.state!)
             }
         }
+        .task {
+            AnalyticService.shared.initialise()
+        }
         .preferredColorScheme(theme.overrideTheme)
         .environment(\.colorScheme, theme.overrideTheme ?? scheme)
     }

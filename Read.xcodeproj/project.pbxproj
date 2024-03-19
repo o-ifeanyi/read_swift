@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1E0A3B9C2B71A44E00C173FB /* RenameSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0A3B9B2B71A44E00C173FB /* RenameSheet.swift */; };
 		1E0CED762B6BEA74000D9B6C /* HighlightedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0CED752B6BEA74000D9B6C /* HighlightedTextView.swift */; };
+		1E0DFD202BA8C56000A5BD90 /* AnalyticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0DFD1F2BA8C56000A5BD90 /* AnalyticService.swift */; };
+		1E0DFD232BA8CFE400A5BD90 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0DFD222BA8CFE400A5BD90 /* Secrets.swift */; };
+		1E0DFD262BA8D49400A5BD90 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0DFD252BA8D49400A5BD90 /* Mixpanel */; };
 		1E0E8BC22B6DC6D20006C558 /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E8BC12B6DC6D20006C558 /* LibraryViewModel.swift */; };
 		1E0E8BC62B6DCFDA0006C558 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */; };
 		1E28DBAB2B80B60400B52A01 /* AboutAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E28DBAA2B80B60400B52A01 /* AboutAppView.swift */; };
@@ -22,6 +25,7 @@
 		1E2B43EA2B6A9CCB000BBEF6 /* GridTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B43E92B6A9CCB000BBEF6 /* GridTileView.swift */; };
 		1E2B43EC2B6AFAF7000BBEF6 /* CustomSliderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B43EB2B6AFAF7000BBEF6 /* CustomSliderSheet.swift */; };
 		1E3BF8E72B758FED001F87DB /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3BF8E62B758FED001F87DB /* SettingsItem.swift */; };
+		1E4DE45B2BA8F2040089D862 /* EnterTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4DE45A2BA8F2040089D862 /* EnterTextView.swift */; };
 		1E60C4602B84C18D00F9EBCE /* WhatsNewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E60C45F2B84C18D00F9EBCE /* WhatsNewModel.swift */; };
 		1E6CF05F2B85657900CE4211 /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6CF05E2B85657900CE4211 /* AppButton.swift */; };
 		1E75D72A2B7037B900BC0051 /* FolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E75D7292B7037B900BC0051 /* FolderModel.swift */; };
@@ -80,6 +84,8 @@
 /* Begin PBXFileReference section */
 		1E0A3B9B2B71A44E00C173FB /* RenameSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameSheet.swift; sourceTree = "<group>"; };
 		1E0CED752B6BEA74000D9B6C /* HighlightedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedTextView.swift; sourceTree = "<group>"; };
+		1E0DFD1F2BA8C56000A5BD90 /* AnalyticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
+		1E0DFD222BA8CFE400A5BD90 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		1E0E8BC12B6DC6D20006C558 /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		1E28DBAA2B80B60400B52A01 /* AboutAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAppView.swift; sourceTree = "<group>"; };
@@ -93,6 +99,7 @@
 		1E2B43E92B6A9CCB000BBEF6 /* GridTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridTileView.swift; sourceTree = "<group>"; };
 		1E2B43EB2B6AFAF7000BBEF6 /* CustomSliderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderSheet.swift; sourceTree = "<group>"; };
 		1E3BF8E62B758FED001F87DB /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
+		1E4DE45A2BA8F2040089D862 /* EnterTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterTextView.swift; sourceTree = "<group>"; };
 		1E60C45F2B84C18D00F9EBCE /* WhatsNewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewModel.swift; sourceTree = "<group>"; };
 		1E6CF05E2B85657900CE4211 /* AppButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButton.swift; sourceTree = "<group>"; };
 		1E75D7292B7037B900BC0051 /* FolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModel.swift; sourceTree = "<group>"; };
@@ -139,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E0DFD262BA8D49400A5BD90 /* Mixpanel in Frameworks */,
 				1EA862C02B61C5CC00F459EC /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,6 +318,7 @@
 				1EE20C7D2B62831300104CC7 /* SpeechService.swift */,
 				1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */,
 				1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */,
+				1E0DFD1F2BA8C56000A5BD90 /* AnalyticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -320,6 +329,7 @@
 				1EE20C7B2B62828000104CC7 /* TextParser.swift */,
 				1E9CA7822B668AF4006DB304 /* Extentions.swift */,
 				1E28DBB02B80D8F900B52A01 /* Constants.swift */,
+				1E0DFD222BA8CFE400A5BD90 /* Secrets.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -329,6 +339,7 @@
 			children = (
 				1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */,
 				1E75D72D2B7056BF00BC0051 /* EnterUrlSheet.swift */,
+				1E4DE45A2BA8F2040089D862 /* EnterTextView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -414,6 +425,7 @@
 			name = Read;
 			packageProductDependencies = (
 				1EA862BF2B61C5CC00F459EC /* SwiftSoup */,
+				1E0DFD252BA8D49400A5BD90 /* Mixpanel */,
 			);
 			productName = Read;
 			productReference = 1EA3A8622B5BDDA400B1024F /* Read.app */;
@@ -489,6 +501,7 @@
 			mainGroup = 1EA3A8592B5BDDA400B1024F;
 			packageReferences = (
 				1EA862BE2B61C5CC00F459EC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				1E0DFD242BA8D49400A5BD90 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 			);
 			productRefGroup = 1EA3A8632B5BDDA400B1024F /* Products */;
 			projectDirPath = "";
@@ -549,6 +562,7 @@
 				1E3BF8E72B758FED001F87DB /* SettingsItem.swift in Sources */,
 				1E0A3B9C2B71A44E00C173FB /* RenameSheet.swift in Sources */,
 				1EDE7C7B2B6FE7E600D50213 /* SelectingToolBar.swift in Sources */,
+				1E0DFD232BA8CFE400A5BD90 /* Secrets.swift in Sources */,
 				1EE20C802B62892D00104CC7 /* PlayerView.swift in Sources */,
 				1E28DBAD2B80B9B200B52A01 /* TextToSpeechView.swift in Sources */,
 				1EA3A8AD2B5BED9C00B1024F /* HomeView.swift in Sources */,
@@ -559,7 +573,9 @@
 				1EA3A8682B5BDDA400B1024F /* ContentView.swift in Sources */,
 				1EE20C7E2B62831300104CC7 /* SpeechService.swift in Sources */,
 				1E9CA7812B6679B1006DB304 /* SpeechScreen.swift in Sources */,
+				1E4DE45B2BA8F2040089D862 /* EnterTextView.swift in Sources */,
 				1EA3A8C32B5C185600B1024F /* AppearanceView.swift in Sources */,
+				1E0DFD202BA8C56000A5BD90 /* AnalyticService.swift in Sources */,
 				1EA3A8662B5BDDA400B1024F /* ReadApp.swift in Sources */,
 				1EC4DEFB2B8A2CC40047C1DF /* WaveForm.swift in Sources */,
 				1E75D72C2B703A7800BC0051 /* CreateFolderSheet.swift in Sources */,
@@ -912,17 +928,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1E0DFD242BA8D49400A5BD90 /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 4.2.2;
+			};
+		};
 		1EA862BE2B61C5CC00F459EC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.7.0;
+				kind = exactVersion;
+				version = 2.7.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1E0DFD252BA8D49400A5BD90 /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E0DFD242BA8D49400A5BD90 /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
 		1EA862BF2B61C5CC00F459EC /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1EA862BE2B61C5CC00F459EC /* XCRemoteSwiftPackageReference "SwiftSoup" */;

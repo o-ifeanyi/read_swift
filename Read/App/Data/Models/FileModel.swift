@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-enum LibraryType: Codable { case pdf, img, url }
+enum LibraryType: Codable { case pdf, img, txt, url }
 
 @Model
 final class FileModel {
@@ -36,6 +36,8 @@ final class FileModel {
             Symbols.doc
         case .img:
             Symbols.photo
+        case .txt:
+            Symbols.text
         case .url:
             Symbols.link
         }

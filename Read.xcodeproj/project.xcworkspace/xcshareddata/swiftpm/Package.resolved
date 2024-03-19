@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "mixpanel-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mixpanel/mixpanel-swift",
+      "state" : {
+        "revision" : "e1339901ad761c55004f62a596d3c0612b9dc6d5",
+        "version" : "4.2.2"
+      }
+    },
+    {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup.git",
       "state" : {
-        "revision" : "f83c097597094a04124eb6e0d1e894d24129af87",
-        "version" : "2.7.0"
+        "revision" : "028487d4a8a291b2fe1b4392b5425b6172056148",
+        "version" : "2.7.2"
       }
     }
   ],

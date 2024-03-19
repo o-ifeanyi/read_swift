@@ -46,7 +46,16 @@ struct TextParser {
             recognizeRequest.recognitionLevel = .accurate
             try handler.perform([recognizeRequest])
         } catch {
-            print(error)
+            print(error.localizedDescription)
+        }
+    }
+    
+    static func parseText(url: URL, perform action: @escaping (_ result: String) -> Void) {
+        do {
+            let content = try String(contentsOf: url)
+            action(content)
+        } catch {
+            print(error.localizedDescription)
         }
     }
     

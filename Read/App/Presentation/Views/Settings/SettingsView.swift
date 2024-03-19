@@ -81,5 +81,8 @@ struct SettingsView: View {
             WhatsNewView()
                 .presentationDetents([.medium, .large])
         }
+        .task {
+            AnalyticService.shared.track(event: "view_settings")
+        }
     }
 }

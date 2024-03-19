@@ -10,6 +10,7 @@ import PDFKit
 import PhotosUI
 
 struct HomeView: View {
+    @Environment(Router.self) private var router
     @Environment(LibraryViewModel.self) private var libraryVM
     @Environment(SettingsViewModel.self) private var settingsVM
     @Environment(SpeechService.self) private var speechService
@@ -25,18 +26,18 @@ struct HomeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
-                ListTileView(asset: Symbols.doc.resizable().frame(width: 40, height: 40),title: "Pick document", subtitle: "SizeTransform defines how the size")
-                    .onTapGesture {
-                        pickDoc = true
-                    }
+                ListTileView(asset: Symbols.doc.resizable().frame(width: 40, height: 40),title: "Pick document", subtitle: "Import any PDF from your phone")
+                    .onTapGesture { pickDoc = true }
+                
                 PhotosPicker(selection: $imageItem, matching: .images, photoLibrary: .shared()) {
-                    ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "SizeTransform defines how the size")
+                    ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "Listen to the content of any image")
                 }
                 
-                ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "SizeTransform defines how the size")
-                    .onTapGesture {
-                        showTextField = true
-                    }
+                ListTileView(asset: Symbols.text.resizable().frame(width: 40, height: 40),title: "Paste or write text", subtitle: "Listen to the content of the text")
+                    .onTapGesture { router.push(.enterText) }
+                
+                ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "Listen to the content of any website")
+                    .onTapGesture { showTextField = true }
                 
                 Spacer(minLength: 100)
             }

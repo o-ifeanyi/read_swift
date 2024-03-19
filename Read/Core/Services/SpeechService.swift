@@ -65,6 +65,16 @@ final class SpeechService: NSObject {
                 self.textCount = self.state.text.count
                 self.play()
             })
+        case .txt:
+            let url = URL(fileURLWithPath: model.fullPath)
+            TextParser.parseText(url: url, perform: { result in
+                self.stop()
+                self.state.text  = result
+                self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                self.wordIndex = model.wordIndex
+                self.textCount = self.state.text.count
+                self.play()
+            })
         case .url:
             TextParser.parseUrl(link: model.path, perform: { result in
                 self.stop()

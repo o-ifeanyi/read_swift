@@ -18,7 +18,7 @@ struct SpeechScreen: View {
     
     var body: some View {
         let state = speechService.state
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 15) {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {

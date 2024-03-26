@@ -18,7 +18,7 @@ extension Bundle {
         let version = main.infoDictionary?["CFBundleShortVersionString"] as? String
         let build = main.infoDictionary?["CFBundleVersion"] as? String
         guard version != nil && build != nil else { return nil }
-        return "\(version!).\(build!)"
+        return "\(version!)+\(build!)"
     }
 }
 

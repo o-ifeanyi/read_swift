@@ -16,20 +16,21 @@ struct CreateFolderSheet: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Form {
-                    TextField("Name", text: $name)
-                        .focused($fieldIsFocused)
-                    
-                    AppButton(text: "Continue", action: {
-                        let folder = FolderModel(name: name)
-                        libraryVM.insertItem(folder: folder)
-                        dismiss()
-                    })
-                    .disabled(name.isEmpty)
-                }
+            VStack(spacing: 15) {
+                TextFieldView(hint: "Name", text: $name)
+                    .focused($fieldIsFocused)
+                                
+                AppButton(text: "Continue", action: {
+                    AnalyticService.shared.track(event: "create_folder")
+                    let folder = FolderModel(name: name)
+                    libraryVM.insertItem(folder: folder)
+                    dismiss()
+                })
+                .disabled(name.isEmpty)
                 
+                Spacer()
             }
+            .padding()
             .navigationTitle("Create Folder")
             .toolbar {
                 ToolbarItem {

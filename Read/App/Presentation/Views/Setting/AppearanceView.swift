@@ -1,5 +1,5 @@
 //
-//  SettingsViewThree.swift
+//  AppearanceView.swift
 //  Read
 //
 //  Created by Ifeanyi Onuoha on 20/01/2024.

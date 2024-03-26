@@ -14,23 +14,27 @@ struct EnterTextView: View {
     
     private var textLimit = 4000
     @State private var text: String = ""
-    @FocusState var isInputActive: Bool
+    @FocusState var fieldIsFocused: Bool
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             TextEditor(text: $text)
-                .focused($isInputActive)
+                .focused($fieldIsFocused)
                 .limitText($text, to: textLimit)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         
                         Button("Done") {
-                            isInputActive = false
+                            fieldIsFocused = false
                         }
                     }
                 }
+                .padding(10)
+                .scrollContentBackground(.hidden)
                 .frame(height: UIScreen.height * 0.5)
+                .background(.thinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             
             HStack {
                 Spacer()
@@ -38,10 +42,11 @@ struct EnterTextView: View {
                     .font(.subheadline)
             }
             
-            Spacer(minLength: 10)
+            Spacer(minLength: 15)
             
             AppButton(text: "Continue", action: {
                 do {
+                    AnalyticService.shared.track(event: "enter_text")
                     let docName = "\(Date.now.ISO8601Format()).txt"
                     let docUrl = URL.documentsDirectory.appending(path: docName)
                     
@@ -60,10 +65,15 @@ struct EnterTextView: View {
                 }
                 
             })
+            .disabled(text.isEmpty)
             
-            Spacer(minLength: 100)
+            Spacer(minLength: UIScreen.height * 0.5)
         }
-        .navigationTitle("Enter text")
         .padding()
+        .navigationTitle("Enter text")
+        .ignoresSafeArea(.keyboard)
+        .task {
+            fieldIsFocused = true
+        }
     }
 }

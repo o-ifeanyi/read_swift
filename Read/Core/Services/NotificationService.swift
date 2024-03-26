@@ -5,8 +5,6 @@
 //  Created by Ifeanyi Onuoha on 25/02/2024.
 //
 
-import Foundation
-import UserNotifications
 import MediaPlayer
 
 final class NotificationService {
@@ -59,8 +57,6 @@ final class NotificationService {
         
         nowPlayingInfo[MPMediaItemPropertyTitle] = "\(file!.name)"
         nowPlayingInfo[MPMediaItemPropertyArtist] = "\(file!.type)"
-//        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = (file!.progress * 100)
-//        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = 100
         
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo

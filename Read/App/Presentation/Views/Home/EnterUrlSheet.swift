@@ -18,22 +18,23 @@ struct EnterUrlSheet: View {
     var body: some View {
         
         NavigationView {
-            VStack {
-                Form {
-                    TextField("Link", text: $link)
-                        .focused($fieldIsFocused)
-                    
-                    AppButton(text: "Coninue", action: {
-                        let file = FileModel(name: link.trimUrl, type: .url, path: link)
-                        // TODO: should be inserted on success of update model
-                        libraryVM.insertItem(file: file)
-                        speechService.updateModel(file)
-                        dismiss()
-                    })
-                    .disabled(link.isEmpty)
-                }
+            VStack(spacing: 15) {
+                TextFieldView(hint: "Link", text: $link)
+                    .focused($fieldIsFocused)
+                                
+                AppButton(text: "Continue", action: {
+                    AnalyticService.shared.track(event: "enter_url")
+                    let file = FileModel(name: link.trimUrl, type: .url, path: link)
+                    // TODO: should be inserted on success of update model
+                    libraryVM.insertItem(file: file)
+                    speechService.updateModel(file)
+                    dismiss()
+                })
+                .disabled(link.isEmpty)
                 
+                Spacer()
             }
+            .padding()
             .navigationTitle("Enter Link")
             .toolbar {
                 ToolbarItem {

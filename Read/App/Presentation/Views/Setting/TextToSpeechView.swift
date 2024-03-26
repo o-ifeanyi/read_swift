@@ -25,6 +25,7 @@ struct TextToSpeechView: View {
                         SettingsItem(title: "Speaker Voice", icon: {Symbols.speaker}, color: .orange, trailing: {
                             let voice = speechService.state.voices.first(where: { $0.identifier == voiceIdentifier}) ?? AVSpeechSynthesisVoice(language: "en-GB")
                             Text(voice?.name ?? "")
+                                .lineLimit(1)
                         })
                     })
                     

@@ -29,6 +29,7 @@ struct MoveFilesView: View {
                             .onTapGesture {
                                 Task {
                                     libraryVM.moveToFolder(id: folder.id, files: files)
+                                    AnalyticService.shared.track(event: "move_files")
                                     dismiss()
                                 }
                             }

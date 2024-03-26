@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PDFKit
 import PhotosUI
 
 struct HomeView: View {
@@ -26,17 +25,17 @@ struct HomeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 10) {
-                ListTileView(asset: Symbols.doc.resizable().frame(width: 40, height: 40),title: "Pick document", subtitle: "Import any PDF from your phone")
+                ListTileView(asset: Symbols.doc.resizable().frame(width: 40, height: 40),title: "Pick document", subtitle: "Listen to the content of a PDF")
                     .onTapGesture { pickDoc = true }
                 
                 PhotosPicker(selection: $imageItem, matching: .images, photoLibrary: .shared()) {
-                    ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "Listen to the content of any image")
+                    ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "Listen to the content of an image")
                 }
                 
                 ListTileView(asset: Symbols.text.resizable().frame(width: 40, height: 40),title: "Paste or write text", subtitle: "Listen to the content of the text")
                     .onTapGesture { router.push(.enterText) }
                 
-                ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "Listen to the content of any website")
+                ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "Listen to the content of a website")
                     .onTapGesture { showTextField = true }
                 
                 Spacer(minLength: 100)
@@ -59,6 +58,7 @@ struct HomeView: View {
         .fileImporter(isPresented: $pickDoc, allowedContentTypes: [.pdf], onCompletion: { result in
             do{
                 let url = try result.get()
+                AnalyticService.shared.track(event: "select_doc")
                 let docUrl = URL.documentsDirectory.appending(path: url.name)
                 
                 // needed to prevent error reading file issue
@@ -80,9 +80,11 @@ struct HomeView: View {
             guard imageItem != nil else {
                 return
             }
+            AnalyticService.shared.track(event: "select_image")
             Task {
                 if let loaded = try? await imageItem?.loadTransferable(type: Data.self) {
-                    let url = URL.documentsDirectory.appending(path: "image.jpg")
+                    let docName = "\(Date.now.ISO8601Format()).jpg"
+                    let url = URL.documentsDirectory.appending(path: docName)
                     do {
                         try loaded.write(to: url, options: [.atomic, .completeFileProtection])
                         let file = FileModel(name: url.name, type: .img, path: url.lastPathComponent)

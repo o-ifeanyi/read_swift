@@ -11,7 +11,6 @@ struct SettingsView: View {
     @Environment(Router.self) private var router
     @Environment(SpeechService.self) private var speechService
     @State private var showWhatsNew: Bool = false
-    private var storeLink = URL(string: "https://www.hackingwithswift.com")!
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -31,20 +30,24 @@ struct SettingsView: View {
                 Text("Support")
                     .fontWeight(.semibold)
                 GroupBox {
-                    Link(destination: storeLink, label: {
-                        SettingsItem(title: "Leave A Review", icon: {Symbols.star}, color: .blue, trailing: {})
+                    Button(action: {
+                        if let url = URL(string: "\(Constants.storeLink)?action=write-review") {
+                            UIApplication.shared.open(url)
+                        }
+                    }, label: {
+                        SettingsItem(title: "Leave A Review", icon: {Symbols.star}, color: .blue, trailing: { })
                     })
                     
                     Button(action: {
-                        let email = "ifeanyi@gmail.com"
-                        if let url = URL(string: "mailto:\(email)") {
+                        let email = "readappeng@gmail.com"
+                        if let url = URL(string: "mailto:\(email)?subject=Read Support") {
                             UIApplication.shared.open(url)
                         }
                     }, label: {
                         SettingsItem(title: "Contact Support", icon: {Symbols.question}, color: .green, trailing: {})
                     })
                     
-                    ShareLink(item: storeLink) {
+                    ShareLink(item: Constants.storeLink) {
                         SettingsItem(title: "Share App", icon: {Symbols.share}, color: .orange, trailing: {})
                     }
                 }
@@ -67,6 +70,7 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Text("VER \(Bundle.appVersion!)")
+                            .font(.subheadline)
                             .multilineTextAlignment(.center)
                         Spacer()
                     }
@@ -80,9 +84,6 @@ struct SettingsView: View {
         .sheet(isPresented: $showWhatsNew) {
             WhatsNewView()
                 .presentationDetents([.medium, .large])
-        }
-        .task {
-            AnalyticService.shared.track(event: "view_settings")
         }
     }
 }

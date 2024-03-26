@@ -5,7 +5,6 @@
 //  Created by Ifeanyi Onuoha on 25/01/2024.
 //
 
-import SwiftUI
 import AVFoundation
 
 struct SpeechState {
@@ -54,6 +53,7 @@ final class SpeechService: NSObject {
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
+                AnalyticService.shared.track(event: "play_doc")
             })
         case .img:
             let url = URL(fileURLWithPath: model.fullPath)
@@ -64,6 +64,7 @@ final class SpeechService: NSObject {
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
+                AnalyticService.shared.track(event: "play_image")
             })
         case .txt:
             let url = URL(fileURLWithPath: model.fullPath)
@@ -74,6 +75,7 @@ final class SpeechService: NSObject {
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
+                AnalyticService.shared.track(event: "play_text")
             })
         case .url:
             TextParser.parseUrl(link: model.path, perform: { result in
@@ -83,6 +85,7 @@ final class SpeechService: NSObject {
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
+                AnalyticService.shared.track(event: "play_url")
             })
         }
     }
@@ -227,7 +230,6 @@ extension SpeechService: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString: NSRange, utterance: AVSpeechUtterance) {
         if (wordIndex < words.count) {
             updateProgress()
-            NotificationService.shared.showMediaStyleNotification()
         }
     }
 }

@@ -6,11 +6,8 @@
 //
 
 import SwiftUI
-import SwiftData
-import PDFKit
 
 struct LibraryView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(Router.self) private var router
     @Environment(SpeechService.self) private var speechService
     @Environment(LibraryViewModel.self) private var libraryVM

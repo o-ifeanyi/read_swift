@@ -13,4 +13,6 @@ struct Constants {
     static let speechRate = "speechRate"
     static let voice = "voice"
     static let storeLink = "https://apps.apple.com/us/app/read-text-to-speech/id6479220259"
+    static let privacyLink = "https://read-web.web.app/#/privacy"
+    static let termsLink = "https://read-web.web.app/#/terms"
 }

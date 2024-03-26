@@ -19,23 +19,23 @@ struct RenameSheet: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Form {
-                    TextField("Name", text: $name)
-                        .focused($fieldIsFocused)
-                    
-                    AppButton(text: "Continue", action: {
-                        if file != nil {
-                            file!.name = name
-                        } else if folder != nil {
-                            folder!.name = name
-                        }
-                        dismiss()
-                    })
-                    .disabled(name.isEmpty)
-                }
+            VStack(spacing: 15) {
+                TextFieldView(hint: "Name", text: $name)
+                    .focused($fieldIsFocused)
+                                
+                AppButton(text: "Continue", action: {
+                    if file != nil {
+                        file!.name = name
+                    } else if folder != nil {
+                        folder!.name = name
+                    }
+                    dismiss()
+                })
+                .disabled(name.isEmpty)
                 
+                Spacer()
             }
+            .padding()
             .navigationTitle("Rename")
             .toolbar {
                 ToolbarItem {

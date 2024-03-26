@@ -7,18 +7,24 @@
 
 import SwiftUI
 
-struct AboutAppView: View {
-    private var storeLink = URL(string: "https://www.hackingwithswift.com")!
-    
+struct AboutAppView: View {    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 15) {
                 GroupBox {
-                    Link(destination: storeLink, label: {
+                    Button(action: {
+                        if let url = URL(string: Constants.privacyLink) {
+                            UIApplication.shared.open(url)
+                        }
+                    }, label: {
                         SettingsItem(title: "Privacy Policy", icon: {Symbols.shield}, color: .purple, trailing: {})
                     })
                     
-                    Link(destination: storeLink, label: {
+                    Button(action: {
+                        if let url = URL(string: Constants.termsLink) {
+                            UIApplication.shared.open(url)
+                        }
+                    }, label: {
                         SettingsItem(title: "Terms Of Service", icon: {Symbols.doc_ol}, color: .cyan, trailing: {})
                     })
                 }
@@ -27,8 +33,4 @@ struct AboutAppView: View {
             .padding()
         }
     }
-}
-
-#Preview {
-    AboutAppView()
 }

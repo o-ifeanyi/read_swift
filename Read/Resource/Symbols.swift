@@ -13,6 +13,7 @@ enum Symbols {
     static let setting = Image(systemName: "gearshape")
     static let play = Image(systemName: "play.fill")
     static let pause = Image(systemName: "pause.fill")
+    static let stop = Image(systemName: "stop.fill")
     static let forward = Image(systemName: "forward.fill")
     static let rewind = Image(systemName: "backward.fill")
     static let speaker = Image(systemName: "person.wave.2")

@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct SpeechScreen: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(SpeechService.self) private var speechService
     @AppStorage(Constants.voice) private var voiceIdentifier = ""
     @State private var showPageSheet: Bool = false
     @State private var showVoicesSheet: Bool = false
     @State private var showRateSheet: Bool = false
-    
-    let onClose: () -> Void
-    
+        
     var body: some View {
         let state = speechService.state
         NavigationStack {
@@ -85,7 +84,7 @@ struct SpeechScreen: View {
             .navigationTitle("Player")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(action: { onClose() }, label: {
+                    Button(action: { dismiss() }, label: {
                         Symbols.down
                     })
                 }

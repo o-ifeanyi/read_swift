@@ -16,7 +16,7 @@ struct ReadApp: App {
         WindowGroup {
             ContentView()
                 .environment(Router.shared)
-                .environment(SnackBarService.shared)
+                .environment(AppStateService.shared)
                 .environment(SpeechService.shared)
                 .environment(LibraryViewModel(modelContext: database.container.mainContext))
                 .environment(SettingsViewModel(modelContext: database.container.mainContext))

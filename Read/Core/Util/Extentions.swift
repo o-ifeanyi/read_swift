@@ -47,6 +47,15 @@ extension String {
         }
         return self
     }
+
+    var formatted: String {
+        do {
+            let first = self.replacing(try Regex("[*]"), with: "")
+            return first.replacing(try Regex("[\\s+]"), with: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+        } catch {
+            return self.replacing("\n", with: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+    }
 }
 
 extension Date {

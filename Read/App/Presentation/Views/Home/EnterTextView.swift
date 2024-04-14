@@ -56,9 +56,10 @@ struct EnterTextView: View {
                     try text.write(to: docUrl, atomically: true, encoding: String.Encoding.utf8)
                     
                     let file = FileModel(name: docUrl.name, type: .txt, path: docUrl.lastPathComponent)
-                    // TODO: should be inserted on success of update model
-                    libraryVM.insertItem(file: file)
-                    speechService.updateModel(file)
+                    speechService.updateModel(file) {
+                        // sinsert on success of update model
+                        libraryVM.insertItem(file: file)
+                    }
                     router.pop()
                 } catch {
                     print(error.localizedDescription)

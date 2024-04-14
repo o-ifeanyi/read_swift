@@ -39,54 +39,93 @@ final class SpeechService: NSObject {
     
     
     @MainActor
-    func updateModel(_ model: FileModel) {
+    func updateModel(_ model: FileModel, callBack: (() -> Void)? = nil) {
         state.model = model
         switch model.type {
         case .pdf:
             let url = URL(fileURLWithPath: model.fullPath)
-            TextParser.parsePdf(url: url, page: model.currentPage, perform: { result, pageCount in
-                model.totalPages = pageCount
-                
+            TextParser.parsePdf(url: url, page: model.currentPage, perform: { result, pageCount, error in
                 self.stop()
                 self.state.text = result
                 self.words = self.state.text.split(separator: " ").map( { "\($0)" })
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
-                AnalyticService.shared.track(event: "play_doc")
+                if error == nil {
+                    model.totalPages = pageCount
+                    callBack?()
+                    AnalyticService.shared.track(event: "play_doc")
+                }
             })
         case .img:
-            let url = URL(fileURLWithPath: model.fullPath)
-            TextParser.parseImage(url: url, perform: { result in
+            if let cached = model.readCache() {
                 self.stop()
-                self.state.text  = result
+                self.state.text  = cached
                 self.words = self.state.text.split(separator: " ").map( { "\($0)" })
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
-                AnalyticService.shared.track(event: "play_image")
-            })
+                AnalyticService.shared.track(event: "play_image_cache")
+            } else {
+                AppStateService.shared.displayLoader()
+                let url = URL(fileURLWithPath: model.fullPath)
+                TextParser.parseImage(url: url, perform: { result, generated, error in
+                    self.stop()
+                    self.state.text  = result
+                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                    self.wordIndex = model.wordIndex
+                    self.textCount = self.state.text.count
+                    self.play()
+                    if error == nil {
+                        if generated == true {
+                            model.writeCache(text: result)
+                        }
+                        callBack?()
+                        AnalyticService.shared.track(event: "play_image")
+                    }
+                    AppStateService.shared.removeLoader()
+                })
+            }
         case .txt:
             let url = URL(fileURLWithPath: model.fullPath)
-            TextParser.parseText(url: url, perform: { result in
+            TextParser.parseText(url: url, perform: { result, error in
                 self.stop()
                 self.state.text  = result
                 self.words = self.state.text.split(separator: " ").map( { "\($0)" })
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
-                AnalyticService.shared.track(event: "play_text")
+                if error == nil {
+                    callBack?()
+                    AnalyticService.shared.track(event: "play_text")
+                }
             })
         case .url:
-            TextParser.parseUrl(link: model.path, perform: { result in
+            if let cached = model.readCache() {
                 self.stop()
-                self.state.text = result
+                self.state.text  = cached
                 self.words = self.state.text.split(separator: " ").map( { "\($0)" })
                 self.wordIndex = model.wordIndex
                 self.textCount = self.state.text.count
                 self.play()
-                AnalyticService.shared.track(event: "play_url")
-            })
+                AnalyticService.shared.track(event: "play_url_cache")
+            } else {
+                AppStateService.shared.displayLoader()
+                TextParser.parseUrl(link: model.path, perform: { result, error in
+                    self.stop()
+                    self.state.text = result
+                    self.words = self.state.text.split(separator: " ").map( { "\($0)" })
+                    self.wordIndex = model.wordIndex
+                    self.textCount = self.state.text.count
+                    self.play()
+                    if error == nil {
+                        AnalyticService.shared.track(event: "play_url")
+                        model.writeCache(text: result)
+                        callBack?()
+                    }
+                    AppStateService.shared.removeLoader()
+                })
+            }
         }
     }
     
@@ -120,11 +159,16 @@ final class SpeechService: NSObject {
     }
     
     @MainActor
-    func stop() {
+    func stop(_ reset: Bool = false) {
         wordIndex = 0
         state.progress = 0.0
         state.wordRange = .init()
         synthesizer.stopSpeaking(at: .immediate)
+        
+        if reset {
+            state.text = ""
+            state.model = nil
+        }
     }
     
     

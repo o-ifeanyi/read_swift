@@ -25,9 +25,10 @@ struct EnterUrlSheet: View {
                 AppButton(text: "Continue", action: {
                     AnalyticService.shared.track(event: "enter_url")
                     let file = FileModel(name: link.trimUrl, type: .url, path: link)
-                    // TODO: should be inserted on success of update model
-                    libraryVM.insertItem(file: file)
-                    speechService.updateModel(file)
+                    speechService.updateModel(file) {
+                        // insert on success of update model
+                        libraryVM.insertItem(file: file)
+                    }
                     dismiss()
                 })
                 .disabled(link.isEmpty)

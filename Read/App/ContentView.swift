@@ -12,7 +12,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var scheme
     @AppStorage(Constants.theme) private var theme = AppTheme.system
     @Environment(Router.self) private var router
-    @Environment(SnackBarService.self) private var snackbarService
+    @Environment(AppStateService.self) private var appState
     
     @State private var expanded: Bool = false
     
@@ -52,25 +52,19 @@ struct ContentView: View {
             }
             
             PlayerView(expanded: $expanded)
-                .onTapGesture {
-                    withAnimation(.spring) {
-                        expanded = true
-                    }
-                }
-            
-            if expanded {
-                SpeechScreen {
-                    withAnimation(.spring) {
-                        expanded = false
-                    }
-                }
-                .transition(.push(from: .bottom))
-            }
+                .onTapGesture { expanded = true }
+    
         }
         .overlay(alignment: .top) {
-            if (snackbarService.state != nil) {
-                SnackbarComponent(state: snackbarService.state!)
+            if (appState.snackbar != nil) {
+                SnackbarComponent(snackbar: appState.snackbar!)
             }
+            if (appState.loader != nil) {
+                LoaderComponent(loader: appState.loader!)
+            }
+        }
+        .sheet(isPresented: $expanded) {
+            SpeechScreen()
         }
         .task {
             AnalyticService.shared.initialise()

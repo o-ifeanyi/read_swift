@@ -13,7 +13,7 @@ struct HomeView: View {
     @Environment(LibraryViewModel.self) private var libraryVM
     @Environment(SettingsViewModel.self) private var settingsVM
     @Environment(SpeechService.self) private var speechService
-    @Environment(SnackBarService.self) private var snackbar
+    @Environment(AppStateService.self) private var appState
     
     @State private var pickDoc: Bool = false
     
@@ -67,37 +67,37 @@ struct HomeView: View {
                 try FileManager.default.copyItem(at: url, to: docUrl)
                 
                 let file = FileModel(name: docUrl.name, type: .pdf, path: docUrl.lastPathComponent)
-                // TODO: should be inserted on success of update model
-                libraryVM.insertItem(file: file)
-                speechService.updateModel(file)
+                speechService.updateModel(file) {
+                    // insert on success of update model
+                    libraryVM.insertItem(file: file)
+                }
             }
             catch{
-                snackbar.displayMessage(error.localizedDescription)
-                print("error reading file \(error.localizedDescription)")
+                appState.displayMessage(error.localizedDescription)
             }
         })
         .onChange(of: imageItem) {
             guard imageItem != nil else {
                 return
             }
-            AnalyticService.shared.track(event: "select_image")
             Task {
+                AnalyticService.shared.track(event: "select_image")
                 if let loaded = try? await imageItem?.loadTransferable(type: Data.self) {
                     let docName = "\(Date.now.ISO8601Format()).jpg"
                     let url = URL.documentsDirectory.appending(path: docName)
                     do {
                         try loaded.write(to: url, options: [.atomic, .completeFileProtection])
                         let file = FileModel(name: url.name, type: .img, path: url.lastPathComponent)
-                        // TODO: should be inserted on success of update model
-                        libraryVM.insertItem(file: file)
-                        speechService.updateModel(file)
+                        speechService.updateModel(file) {
+                            // insert on success of update model
+                            libraryVM.insertItem(file: file)
+                        }
                     } catch {
-                        snackbar.displayMessage(error.localizedDescription)
+                        appState.displayMessage(error.localizedDescription)
                         print(error.localizedDescription)
                     }
                 } else {
-                    snackbar.displayMessage("Failed to process image")
-                    print("Failed")
+                    appState.displayMessage("Failed to process image")
                 }
             }
         }

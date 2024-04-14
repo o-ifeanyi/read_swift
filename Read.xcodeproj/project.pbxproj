@@ -44,7 +44,7 @@
 		1EA3A8792B5BDDA500B1024F /* ReadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8782B5BDDA500B1024F /* ReadTests.swift */; };
 		1EA3A8832B5BDDA500B1024F /* ReadUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8822B5BDDA500B1024F /* ReadUITests.swift */; };
 		1EA3A8852B5BDDA500B1024F /* ReadUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8842B5BDDA500B1024F /* ReadUITestsLaunchTests.swift */; };
-		1EA3A89D2B5BE31B00B1024F /* SnackBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A89C2B5BE31B00B1024F /* SnackBarService.swift */; };
+		1EA3A89D2B5BE31B00B1024F /* AppStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A89C2B5BE31B00B1024F /* AppStateService.swift */; };
 		1EA3A8A12B5BE68800B1024F /* SnackbarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8A02B5BE68800B1024F /* SnackbarComponent.swift */; };
 		1EA3A8A72B5BE9AC00B1024F /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8A62B5BE9AC00B1024F /* Symbols.swift */; };
 		1EA3A8AD2B5BED9C00B1024F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */; };
@@ -63,6 +63,9 @@
 		1EE20C802B62892D00104CC7 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE20C7F2B62892D00104CC7 /* PlayerView.swift */; };
 		1EE9A1E32BA9B128002F5745 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE9A1E22BA9B128002F5745 /* TextFieldView.swift */; };
 		1EF5B91F2B8B9A7900116C68 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */; };
+		1EFDBCA72BCA75F3006A86BC /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1EFDBCA62BCA75F3006A86BC /* GoogleGenerativeAI */; };
+		1EFDBCA92BCA8317006A86BC /* LoaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFDBCA82BCA8317006A86BC /* LoaderComponent.swift */; };
+		1EFDBCAB2BCA8EAC006A86BC /* ReadError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFDBCAA2BCA8EAC006A86BC /* ReadError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,7 +125,7 @@
 		1EA3A87E2B5BDDA500B1024F /* ReadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA3A8822B5BDDA500B1024F /* ReadUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadUITests.swift; sourceTree = "<group>"; };
 		1EA3A8842B5BDDA500B1024F /* ReadUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		1EA3A89C2B5BE31B00B1024F /* SnackBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarService.swift; sourceTree = "<group>"; };
+		1EA3A89C2B5BE31B00B1024F /* AppStateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateService.swift; sourceTree = "<group>"; };
 		1EA3A8A02B5BE68800B1024F /* SnackbarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarComponent.swift; sourceTree = "<group>"; };
 		1EA3A8A62B5BE9AC00B1024F /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		1EA3A8AC2B5BED9C00B1024F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 		1EE20C7F2B62892D00104CC7 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		1EE9A1E22BA9B128002F5745 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		1EFDBCA82BCA8317006A86BC /* LoaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderComponent.swift; sourceTree = "<group>"; };
+		1EFDBCAA2BCA8EAC006A86BC /* ReadError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EFDBCA72BCA75F3006A86BC /* GoogleGenerativeAI in Frameworks */,
 				1E0DFD262BA8D49400A5BD90 /* Mixpanel in Frameworks */,
 				1EA862C02B61C5CC00F459EC /* SwiftSoup in Frameworks */,
 			);
@@ -203,6 +209,7 @@
 				1E6CF05E2B85657900CE4211 /* AppButton.swift */,
 				1EC4DEFA2B8A2CC40047C1DF /* WaveForm.swift */,
 				1EE9A1E22BA9B128002F5745 /* TextFieldView.swift */,
+				1EFDBCA82BCA8317006A86BC /* LoaderComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -212,6 +219,7 @@
 			children = (
 				1E28DBB72B81096000B52A01 /* AppTheme.swift */,
 				1E28DBB92B81098B00B52A01 /* DisplayStyle.swift */,
+				1EFDBCAA2BCA8EAC006A86BC /* ReadError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -317,7 +325,7 @@
 		1EA3A8952B5BE2CD00B1024F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1EA3A89C2B5BE31B00B1024F /* SnackBarService.swift */,
+				1EA3A89C2B5BE31B00B1024F /* AppStateService.swift */,
 				1EE20C7D2B62831300104CC7 /* SpeechService.swift */,
 				1E0E8BC52B6DCFDA0006C558 /* DatabaseService.swift */,
 				1EF5B91E2B8B9A7900116C68 /* NotificationService.swift */,
@@ -429,6 +437,7 @@
 			packageProductDependencies = (
 				1EA862BF2B61C5CC00F459EC /* SwiftSoup */,
 				1E0DFD252BA8D49400A5BD90 /* Mixpanel */,
+				1EFDBCA62BCA75F3006A86BC /* GoogleGenerativeAI */,
 			);
 			productName = Read;
 			productReference = 1EA3A8622B5BDDA400B1024F /* Read.app */;
@@ -505,6 +514,7 @@
 			packageReferences = (
 				1EA862BE2B61C5CC00F459EC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				1E0DFD242BA8D49400A5BD90 /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+				1EFDBCA52BCA75F3006A86BC /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			productRefGroup = 1EA3A8632B5BDDA400B1024F /* Products */;
 			projectDirPath = "";
@@ -559,6 +569,7 @@
 				1EA3A8A12B5BE68800B1024F /* SnackbarComponent.swift in Sources */,
 				1E75D72A2B7037B900BC0051 /* FolderModel.swift in Sources */,
 				1E28DBB52B80F08700B52A01 /* WhatsNewView.swift in Sources */,
+				1EFDBCAB2BCA8EAC006A86BC /* ReadError.swift in Sources */,
 				1EC4949E2B6E6EC700058BAF /* FileModel.swift in Sources */,
 				1E75D72E2B7056BF00BC0051 /* EnterUrlSheet.swift in Sources */,
 				1EF5B91F2B8B9A7900116C68 /* NotificationService.swift in Sources */,
@@ -569,7 +580,7 @@
 				1EE20C802B62892D00104CC7 /* PlayerView.swift in Sources */,
 				1E28DBAD2B80B9B200B52A01 /* TextToSpeechView.swift in Sources */,
 				1EA3A8AD2B5BED9C00B1024F /* HomeView.swift in Sources */,
-				1EA3A89D2B5BE31B00B1024F /* SnackBarService.swift in Sources */,
+				1EA3A89D2B5BE31B00B1024F /* AppStateService.swift in Sources */,
 				1E75D7322B706E0200BC0051 /* MoveFilesView.swift in Sources */,
 				1E28DBAB2B80B60400B52A01 /* AboutAppView.swift in Sources */,
 				1E0E8BC62B6DCFDA0006C558 /* DatabaseService.swift in Sources */,
@@ -584,6 +595,7 @@
 				1E75D72C2B703A7800BC0051 /* CreateFolderSheet.swift in Sources */,
 				1E853D332B9C7AB400F2700A /* GoToPageSheet.swift in Sources */,
 				1EE9A1E32BA9B128002F5745 /* TextFieldView.swift in Sources */,
+				1EFDBCA92BCA8317006A86BC /* LoaderComponent.swift in Sources */,
 				1E9CA7832B668AF4006DB304 /* Extentions.swift in Sources */,
 				1E2B43EC2B6AFAF7000BBEF6 /* CustomSliderSheet.swift in Sources */,
 				1E60C4602B84C18D00F9EBCE /* WhatsNewModel.swift in Sources */,
@@ -758,7 +770,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Read/Preview Content\"";
 				DEVELOPMENT_TEAM = YYA8WP4LNJ;
 				ENABLE_PREVIEWS = YES;
@@ -777,7 +789,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ifeanyi.Read;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -792,7 +804,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Read/Preview Content\"";
 				DEVELOPMENT_TEAM = YYA8WP4LNJ;
 				ENABLE_PREVIEWS = YES;
@@ -811,7 +823,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ifeanyi.Read;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -954,6 +966,14 @@
 				version = 2.7.2;
 			};
 		};
+		1EFDBCA52BCA75F3006A86BC /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.11;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -966,6 +986,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1EA862BE2B61C5CC00F459EC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		1EFDBCA62BCA75F3006A86BC /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1EFDBCA52BCA75F3006A86BC /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

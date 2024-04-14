@@ -9,11 +9,11 @@ import SwiftUI
 
 struct SnackbarComponent: View {
     @State private var isAnimating: Bool = false
-    @State var state: SnackBarState
+    @State var snackbar: SnackBarState
     
     var body: some View {
         HStack {
-            Text(state.messasge)
+            Text(snackbar.messasge)
                 .foregroundColor(.white)
                 .lineLimit(1...2)
                 .multilineTextAlignment(.leading)
@@ -21,7 +21,7 @@ struct SnackbarComponent: View {
             
             Spacer()
         }
-        .background(state.isError ? .red : .green)
+        .background(snackbar.isError ? .red : .green)
         .cornerRadius(10)
         .padding()
         .opacity(isAnimating ? 1 : 0)

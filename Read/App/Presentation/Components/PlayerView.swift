@@ -27,6 +27,13 @@ struct PlayerView: View {
                 
                 Spacer()
                 
+                Button(action: {
+                    speechService.stop(true)
+                }, label: {
+                    Symbols.stop
+                        .padding(.horizontal, 10)
+                        .font(.title2)
+                })
 
                 if state.isPlaying {
                     Button(action: {
@@ -46,7 +53,6 @@ struct PlayerView: View {
             }
             ProgressView(value: state.progress)
         }
-        
         .padding(10)
         .background(.thinMaterial)
         .cornerRadius(8)

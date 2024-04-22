@@ -28,6 +28,16 @@ struct AboutAppView: View {
                         SettingsItem(title: "Terms Of Service", icon: {Symbols.doc_ol}, color: .cyan, trailing: {})
                     })
                 }
+                
+                if Bundle.appVersion != nil {
+                    HStack {
+                        Spacer()
+                        Text("VER \(Bundle.appVersion!)")
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                }
             }
             .navigationTitle("About App")
             .padding()

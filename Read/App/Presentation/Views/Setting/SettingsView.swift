@@ -66,16 +66,6 @@ struct SettingsView: View {
                     })
                 }
                 
-                if Bundle.appVersion != nil {
-                    HStack {
-                        Spacer()
-                        Text("VER \(Bundle.appVersion!)")
-                            .font(.subheadline)
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                    }
-                }
-                
                 Spacer(minLength: 100)
             }
             .navigationTitle("Settings")

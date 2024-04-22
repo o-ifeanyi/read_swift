@@ -59,6 +59,20 @@ struct LibraryView: View {
         
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 10) {
+                if folders.isEmpty && files.isEmpty {
+                    VStack(alignment: .center, spacing: 10) {
+                        Spacer(minLength: UIScreen.height * 0.2)
+                        Symbols.folder
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                        Text("Nothing to see yet")
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                        Text("Items you previously listened to will show up here")
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                    }
+                }
                 if !folders.isEmpty {
                     Text("Folders")
                         .fontWeight(.semibold)

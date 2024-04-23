@@ -104,6 +104,7 @@
 		1E2B43EB2B6AFAF7000BBEF6 /* CustomSliderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSliderSheet.swift; sourceTree = "<group>"; };
 		1E2E9ED12BD826FE00E41CD3 /* Secrets-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Secrets-Info.plist"; sourceTree = "<group>"; };
 		1E2E9ED52BD8278B00E41CD3 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
+		1E32490A2BD867E600B550A2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1E3BF8E62B758FED001F87DB /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		1E4DE45A2BA8F2040089D862 /* EnterTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterTextView.swift; sourceTree = "<group>"; };
 		1E60C45F2B84C18D00F9EBCE /* WhatsNewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewModel.swift; sourceTree = "<group>"; };
@@ -267,6 +268,7 @@
 				1EA3A8652B5BDDA400B1024F /* ReadApp.swift */,
 				1EA3A86D2B5BDDA500B1024F /* Preview Content */,
 				1E2E9ED12BD826FE00E41CD3 /* Secrets-Info.plist */,
+				1E32490A2BD867E600B550A2 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Read;
 			sourceTree = "<group>";

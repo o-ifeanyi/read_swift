@@ -12,7 +12,7 @@ final class AnalyticService {
     static let shared = AnalyticService()
     
     func initialise() {
-        Mixpanel.initialize(token: Secrets.mixPanelKey, trackAutomaticEvents: true)
+        Mixpanel.initialize(token: APIKey.mixPanel, trackAutomaticEvents: true)
     }
     
     func track(event: String) {

@@ -53,7 +53,7 @@ struct TextParser {
             if result.isEmpty {
                 Task {
                     AnalyticService.shared.track(event: "describe_image")
-                    let model = GenerativeModel(name: "gemini-pro-vision", apiKey: Secrets.geminiKey)
+                    let model = GenerativeModel(name: "gemini-pro-vision", apiKey: APIKey.gemini)
                     
                     let response = try await model.generateContent(Constants.describeImagePromt, image!)
                     if let text = response.text {

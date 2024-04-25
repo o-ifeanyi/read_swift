@@ -10,6 +10,7 @@ import SwiftData
 
 struct SettingsState {
     var whatsNew: [WhatsNewModel] = []
+    var iconNames: [String?] = [nil]
 }
 
 @MainActor
@@ -23,6 +24,7 @@ final class SettingsViewModel {
         self.modelContext = modelContext
         checkWhatsNew(id: latestUpdate.id)
         getAllUpdates()
+        getAlternateIconNames()
     }
     
     func checkWhatsNew(id: String) {
@@ -45,6 +47,23 @@ final class SettingsViewModel {
             state.whatsNew = whatsNew.reversed()
         } catch {
             print(error)
+        }
+    }
+    
+    func getAlternateIconNames(){
+        if let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
+           let alternateIcons = icons["CFBundleAlternateIcons"] as? [String: Any] {
+            
+            for (_, value) in alternateIcons {
+                //Accessing the name of icon list inside the dictionary
+                guard let iconList = value as? Dictionary<String,Any> else { return }
+                //Accessing the name of icon files
+                guard let iconFiles = iconList["CFBundleIconFiles"] as? [String]
+                else { return }
+                //Accessing the name of the icon
+                guard let icon = iconFiles.first else { return }
+                state.iconNames.append(icon)
+            }
         }
     }
 }

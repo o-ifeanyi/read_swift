@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct AppearanceView: View {
+    @Environment(SettingsViewModel.self) private var settingsVM
     @AppStorage(Constants.theme) private var theme = AppTheme.system
     @AppStorage(Constants.displayStyle) private var style = DisplayStyle.grid
     
+    let gridColumn = Array(repeating: GridItem(.flexible()), count: 3)
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 15) {
@@ -51,6 +54,29 @@ struct AppearanceView: View {
                     })
                 }
                 
+                if UIApplication.shared.supportsAlternateIcons {
+                    Text("Change Icon")
+                        .fontWeight(.semibold)
+                    
+                    GroupBox {
+                        LazyVGrid(columns: gridColumn) {
+                            ForEach(settingsVM.state.iconNames, id: \.self) { icon in
+                                Image(uiImage: UIImage(named: icon ?? "AppIconRed") ?? .init())
+                                    .resizable()
+                                    .renderingMode(.original)
+                                    .frame(height: (UIScreen.width - 70) / 3)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .onTapGesture {
+                                        UIApplication.shared.setAlternateIconName(icon) { error in
+                                            if let error = error {
+                                                AppStateService.shared.displayMessage(error.localizedDescription)
+                                            }
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle("Appearance")
             .padding()
@@ -58,6 +84,3 @@ struct AppearanceView: View {
     }
 }
 
-#Preview {
-    AppearanceView()
-}

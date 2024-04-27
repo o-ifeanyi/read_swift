@@ -55,10 +55,12 @@ struct TextParser {
                     AnalyticService.shared.track(event: "describe_image")
                     let model = GenerativeModel(name: "gemini-pro-vision", apiKey: APIKey.gemini)
                     
-                    let response = try await model.generateContent(Constants.describeImagePromt, image!)
-                    if let text = response.text {
+                    let response = try? await model.generateContent(Constants.describeImagePromt, image!)
+                    if let text = response?.text {
                         AnalyticService.shared.track(event: "describe_image_success")
                         action(text, true, nil)
+                    } else {
+                        action("Something went wrong. Could not generate a description for this image", false, nil)
                     }
                 }
             } else {
@@ -97,7 +99,6 @@ struct TextParser {
                         }
                     } catch {
                         action("An error occured while parsing url content: \(error.localizedDescription)", .error)
-                        print("Parsing error")
                     }
                 }
             } else if let error = error {

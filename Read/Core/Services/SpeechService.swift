@@ -42,7 +42,7 @@ final class SpeechService: NSObject {
     func updateModel(_ model: FileModel, callBack: (() -> Void)? = nil) {
         state.model = model
         switch model.type {
-        case .pdf:
+        case .pdf, .scan:
             let url = URL(fileURLWithPath: model.fullPath)
             TextParser.parsePdf(url: url, page: model.currentPage, perform: { result, pageCount, error in
                 self.stop()

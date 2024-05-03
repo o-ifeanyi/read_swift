@@ -13,16 +13,22 @@ import GoogleGenerativeAI
 struct TextParser {
     static func parsePdf(url: URL, page: Int, perform action: @escaping (_ result: String, _ pageCount: Int, _ error: ReadError?) -> Void) {
         if let pdf = PDFDocument(url: url) {
-            guard let page = pdf.page(at: page - 1) else { return }
-            guard let pageContent = page.attributedString else { return }
-            
+            guard let pdfPage = pdf.page(at: page - 1) else { return }
+            guard let pageContent = pdfPage.attributedString else {
+                if  let annotation = pdfPage.annotations.first, let content = annotation.contents {
+                    action(content, pdf.pageCount, nil)
+                    return
+                }
+                action("An error occurred while reading pdf content", 0, .error)
+                return
+            }
             action(pageContent.string.formatted, pdf.pageCount, nil)
         } else {
             action("An error occurred while reading pdf", 0, .error)
         }
     }
     
-    @MainActor static func parseImage(url: URL, perform action: @escaping (_ result: String, _ genereated: Bool?, _ error: ReadError?) -> Void) {
+    static func parseImage(url: URL, perform action: @escaping (_ result: String, _ genereated: Bool?, _ error: ReadError?) -> Void) {
         do {
             let imageData = try Data.init(contentsOf: url)
             let image = UIImage(data: imageData)
@@ -45,7 +51,6 @@ struct TextParser {
                 }
                 
                 result = stringArray.joined(separator: " ")
-                
             }
             
             recognizeRequest.recognitionLevel = .accurate
@@ -71,6 +76,44 @@ struct TextParser {
         } catch {
             action("An error occurred while reading image: \(error.localizedDescription)", nil, .error)
         }
+    }
+    
+    static func scansToPdf(images: [CGImage]) -> URL? {
+        do {
+            let pdf = PDFDocument()
+            for image in images {
+                let handler = VNImageRequestHandler(cgImage: image)
+                
+                let recognizeRequest = VNRecognizeTextRequest { (request, error) in
+                    guard let data = request.results as? [VNRecognizedTextObservation] else {
+                        return
+                    }
+                    let stringArray = data.compactMap { result in
+                        result.topCandidates(1).first?.string
+                    }
+                    let page = PDFPage()
+                    
+                    let textAnnotation = PDFAnnotation(bounds: .infinite, forType: .freeText, withProperties: nil)
+                    
+                    textAnnotation.contents = stringArray.joined(separator: " ")
+                    page.addAnnotation(textAnnotation)
+                    pdf.insert(page, at: pdf.pageCount)
+                }
+                
+                recognizeRequest.recognitionLevel = .accurate
+                try handler.perform([recognizeRequest])
+            }
+            
+            
+            let docName = "\(Date.now.ISO8601Format()).pdf"
+            let url = URL.documentsDirectory.appending(path: docName)
+            pdf.write(to: url)
+            return url
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+        
     }
     
     static func parseText(url: URL, perform action: @escaping (_ result: String, _ error: ReadError?) -> Void) {

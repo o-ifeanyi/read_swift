@@ -19,8 +19,10 @@ struct HomeView: View {
     
     @State private var imageItem: PhotosPickerItem?
     
-    @State private var showTextField: Bool = false
+    @State private var showUrlSheet: Bool = false
     @State private var link: String = ""
+    
+    @State private var showScanSheet = false
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -32,11 +34,14 @@ struct HomeView: View {
                     ListTileView(asset: Symbols.photo.resizable().frame(width: 40, height: 40),title: "Pick image", subtitle: "Listen to the content of an image")
                 }
                 
+                ListTileView(asset: Symbols.scan.resizable().frame(width: 40, height: 40),title: "Scan page", subtitle: "Listen to the content of a page")
+                    .onTapGesture { showScanSheet = true }
+                
                 ListTileView(asset: Symbols.text.resizable().frame(width: 40, height: 40),title: "Paste or write text", subtitle: "Listen to the content of the text")
                     .onTapGesture { router.push(.enterText) }
                 
                 ListTileView(asset: Symbols.link.resizable().frame(width: 40, height: 40),title: "Paste web link", subtitle: "Listen to the content of a website")
-                    .onTapGesture { showTextField = true }
+                    .onTapGesture { showUrlSheet = true }
                 
                 Spacer(minLength: 100)
             }
@@ -44,9 +49,25 @@ struct HomeView: View {
             
         }
         .navigationTitle("Home")
-        .sheet(isPresented: $showTextField) {
+        .sheet(isPresented: $showUrlSheet) {
             EnterUrlSheet()
                 .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showScanSheet) {
+            ScanSheet { images in
+                guard !images.isEmpty else {
+                    appState.displayMessage("No images to process")
+                    return
+                }
+                AnalyticService.shared.track(event: "scan_page")
+                if let url = TextParser.scansToPdf(images: images) {
+                    let file = FileModel(name: url.name, type: .scan, path: url.lastPathComponent)
+                    speechService.updateModel(file) {
+                        // insert on success of update model
+                        libraryVM.insertItem(file: file)
+                    }
+                }
+            }
         }
         .sheet(isPresented: Binding(
             get: { settingsVM.showWhatsNew },
@@ -106,4 +127,3 @@ struct HomeView: View {
         }
     }
 }
-

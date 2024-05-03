@@ -32,6 +32,6 @@ final class NewFeature {
     }
 }
 
-let latestUpdate = WhatsNewModel(id: "1.0.2", features: [
-    NewFeature(id: 0, title: "Introducing Generative AI ✨", body: "You now get an AI description of images that have no extractable text"),
+let latestUpdate = WhatsNewModel(id: "1.0.7", features: [
+    NewFeature(id: 0, title: "Scan page 📖", body: "Scan the pages of your favourite books with your camera and listen to them"),
 ])

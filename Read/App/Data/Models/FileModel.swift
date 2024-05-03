@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-enum LibraryType: Codable { case pdf, img, txt, url }
+enum LibraryType: Codable { case pdf, img, scan, txt, url }
 
 @Model
 final class FileModel {
@@ -37,6 +37,8 @@ final class FileModel {
             Symbols.doc
         case .img:
             Symbols.photo
+        case .scan:
+            Symbols.scan
         case .txt:
             Symbols.text
         case .url:
@@ -46,6 +48,10 @@ final class FileModel {
     
     var fullPath: String {
         URL.documentsDirectory.path() + path
+    }
+    
+    var cachePath: String {
+        URL.documentsDirectory.path() + (cache ?? "")
     }
     
     var absProgress: Int {
@@ -59,8 +65,7 @@ final class FileModel {
     func readCache() -> String? {
         do {
             guard cache != nil else { return nil }
-            let path = URL.documentsDirectory.path() + cache!
-            let url = URL(fileURLWithPath: path)
+            let url = URL(fileURLWithPath: cachePath)
             let content = try String(contentsOf: url)
             return content.formatted
         } catch {

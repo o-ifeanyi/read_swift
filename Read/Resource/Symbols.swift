@@ -25,6 +25,7 @@ enum Symbols {
     static let doc_ol = Image(systemName: "doc")
     static let link = Image(systemName: "link")
     static let text = Image(systemName: "character.cursor.ibeam")
+    static let scan = Image(systemName: "text.viewfinder")
     static let photo = Image(systemName: "photo")
     static let ellipsis = Image(systemName: "ellipsis.circle")
     static let trash = Image(systemName: "trash")

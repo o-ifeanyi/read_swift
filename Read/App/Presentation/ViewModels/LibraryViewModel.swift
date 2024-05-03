@@ -114,6 +114,9 @@ final class LibraryViewModel {
             if FileManager.default.fileExists(atPath: file.fullPath) {
                try? FileManager.default.removeItem(atPath: file.fullPath)
             }
+            if file.cache != nil && FileManager.default.fileExists(atPath: file.cachePath) {
+               try? FileManager.default.removeItem(atPath: file.cachePath)
+            }
             modelContext.delete(file)
         }
         // from library
